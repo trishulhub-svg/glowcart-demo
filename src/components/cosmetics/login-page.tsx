@@ -189,8 +189,8 @@ export default function LoginPage() {
             transition={{ duration: 0.7, delay: 0.3, type: 'spring', stiffness: 200 }}
             className="mb-8"
           >
-            <div className="relative w-20 h-20 flex-shrink-0 mb-2">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={80} height={80} className="object-contain drop-shadow-lg" />
+            <div className="relative w-24 h-24 flex-shrink-0 mb-2">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={96} height={96} className="object-contain drop-shadow-lg" />
             </div>
           </motion.div>
 
@@ -240,12 +240,12 @@ export default function LoginPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
           >
-            <div className="relative w-8 h-8 flex-shrink-0">
+            <div className="relative w-10 h-10 flex-shrink-0">
               <Image
                 src="/trishulhub-logo.png"
                 alt="TrishulHub"
-                width={32}
-                height={32}
+                width={40}
+                height={40}
                 className="object-contain"
               />
             </div>
@@ -253,7 +253,7 @@ export default function LoginPage() {
               <span className="text-sm font-semibold text-white/90">
                 A Trishul<span className="text-sky-300">Hub</span> Product
               </span>
-              <span className="text-[9px] text-white/40">Technology & Innovation</span>
+              <span className="text-[10px] text-white/50">Technology & Innovation</span>
             </div>
           </motion.div>
         </div>
@@ -271,15 +271,15 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center gap-2 mb-4">
-            <div className="relative w-10 h-10 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={40} height={40} className="object-contain" />
+          <div className="flex items-center gap-3 mb-4">
+            <div className="relative w-12 h-12 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={48} height={48} className="object-contain" />
             </div>
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-gray-900">
                 Glow<span className="text-rose-500">Cart</span>
               </h1>
-              <p className="text-[10px] text-gray-400 -mt-0.5">Premium Beauty, Delivered</p>
+              <p className="text-[11px] text-gray-500 -mt-0.5">Premium Beauty, Delivered</p>
             </div>
           </div>
         </motion.div>

@@ -176,14 +176,14 @@ export default function DeliveryView() {
       {/* ─── Top Header ──────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-rose-100 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-lg flex items-center justify-between px-4 h-14">
-          <div className="flex items-center gap-2.5">
-            <div className="relative h-7 w-7 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="" width={28} height={28} className="object-contain" />
+          <div className="flex items-center gap-3">
+            <div className="relative h-8 w-8 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={32} height={32} className="object-contain" />
             </div>
             <span className="text-base font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
               Delivery Hub
             </span>
-            <span className="text-[8px] sm:text-[9px] text-gray-400 font-normal ml-1 self-end mb-0.5">by TrishulHub</span>
+            <span className="text-[10px] text-gray-500 font-medium ml-0.5 self-end mb-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -342,14 +342,14 @@ function DeliveryDashboard({
     <div className="space-y-5">
       {/* Greeting */}
       <div>
-        <div className="flex items-center gap-2">
-          <div className="relative h-6 w-6 flex-shrink-0">
-            <Image src="/trishulhub-logo.png" alt="" width={24} height={24} className="object-contain" />
+        <div className="flex items-center gap-2.5">
+          <div className="relative h-7 w-7 flex-shrink-0">
+            <Image src="/trishulhub-logo.png" alt="TrishulHub" width={28} height={28} className="object-contain" />
           </div>
           <h1 className="text-xl font-bold tracking-tight">
             Delivery <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">Hub</span>
           </h1>
-          <span className="text-[8px] sm:text-[9px] text-gray-400 font-normal ml-1">by TrishulHub</span>
+          <span className="text-[10px] text-gray-500 font-medium ml-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
         </div>
         <p className="text-muted-foreground text-sm mt-0.5">Manage your deliveries on the go.</p>
       </div>

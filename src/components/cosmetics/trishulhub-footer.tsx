@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles, ExternalLink } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 
 interface TrishulHubFooterProps {
@@ -27,22 +27,22 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
         {/* Main Footer Row */}
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           {/* Left: TrishulHub Branding */}
-          <div className="flex items-center gap-2.5">
-            <div className="relative w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
               <Image
                 src="/trishulhub-logo.png"
                 alt="TrishulHub"
-                width={32}
-                height={32}
+                width={40}
+                height={40}
                 className="object-contain"
                 priority
               />
             </div>
             <div className="flex flex-col">
-              <span className={`text-xs sm:text-sm font-semibold tracking-tight ${isDark ? 'text-white' : 'text-gray-800'}`}>
+              <span className={`text-sm sm:text-base font-semibold tracking-tight ${isDark ? 'text-white' : 'text-gray-800'}`}>
                 Trishul<span className={isDark ? 'text-sky-400' : 'text-sky-600'}>Hub</span>
               </span>
-              <span className={`text-[9px] sm:text-[10px] ${subTextColor} -mt-0.5`}>Technology & Innovation</span>
+              <span className={`text-[10px] sm:text-[11px] ${isDark ? 'text-white/50' : 'text-gray-500'} -mt-0.5`}>Technology & Innovation</span>
             </div>
           </div>
 
@@ -56,24 +56,11 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
             </div>
           </div>
 
-          {/* Right: Links */}
-          <div className="flex items-center gap-3 sm:gap-4 order-2 sm:order-3">
-            <a
-              href="https://github.com/trishulhub-svg"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex items-center gap-1 text-[11px] sm:text-xs ${linkColor} transition-colors min-h-[32px]`}
-            >
-              GitHub <ExternalLink className="w-3 h-3" />
-            </a>
-            <a
-              href="https://github.com/trishulhub-svg/glowcart-demo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex items-center gap-1 text-[11px] sm:text-xs ${linkColor} transition-colors min-h-[32px]`}
-            >
-              Source <ExternalLink className="w-3 h-3" />
-            </a>
+          {/* Right: Copyright */}
+          <div className="flex items-center gap-3 order-2 sm:order-3">
+            <p className={`text-[11px] sm:text-xs ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
+              &copy; {new Date().getFullYear()} TrishulHub
+            </p>
           </div>
         </div>
 
@@ -81,17 +68,12 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
         <div className={`h-px ${dividerColor} my-3 sm:my-4`} />
 
         {/* Bottom Row */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2">
-          <p className={`text-[10px] sm:text-[11px] ${subTextColor}`}>
-            &copy; {new Date().getFullYear()} TrishulHub. All rights reserved.
-          </p>
-          <div className="flex items-center gap-1 flex-wrap justify-center">
-            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>Protocol v11.0</span>
-            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>·</span>
-            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>Demo Environment</span>
-            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>·</span>
-            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>No real data collected</span>
-          </div>
+        <div className="flex items-center justify-center gap-2 flex-wrap">
+          <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>Protocol v11.0</span>
+          <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>·</span>
+          <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>Demo Environment</span>
+          <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>·</span>
+          <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>No real data collected</span>
         </div>
       </div>
     </motion.footer>
@@ -102,19 +84,22 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
 export function TrishulHubBadge({ variant = 'light' }: { variant?: 'light' | 'dark' }) {
   const isDark = variant === 'dark';
   return (
-    <div className="flex items-center gap-2">
-      <div className="relative w-5 h-5 flex-shrink-0">
+    <div className="flex items-center gap-2.5">
+      <div className="relative w-7 h-7 flex-shrink-0">
         <Image
           src="/trishulhub-logo.png"
-          alt=""
-          width={20}
-          height={20}
+          alt="TrishulHub"
+          width={28}
+          height={28}
           className="object-contain"
         />
       </div>
-      <span className={`text-[10px] font-medium ${isDark ? 'text-white/50' : 'text-gray-400'}`}>
-        by TrishulHub
-      </span>
+      <div className="flex flex-col">
+        <span className={`text-xs font-semibold tracking-tight ${isDark ? 'text-white/70' : 'text-gray-600'}`}>
+          Trishul<span className={isDark ? 'text-sky-400' : 'text-sky-600'}>Hub</span>
+        </span>
+        <span className={`text-[9px] ${isDark ? 'text-white/40' : 'text-gray-400'} -mt-0.5`}>Technology & Innovation</span>
+      </div>
     </div>
   );
 }

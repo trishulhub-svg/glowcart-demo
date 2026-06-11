@@ -185,14 +185,14 @@ export default function EmployeeView() {
       <header className="sticky top-0 z-50 border-b border-rose-100 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl flex items-center justify-between px-4 sm:px-6 h-16">
           {/* Logo */}
-          <div className="flex items-center gap-2.5">
-            <div className="relative h-8 w-8 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="" width={32} height={32} className="object-contain" />
+          <div className="flex items-center gap-3">
+            <div className="relative h-9 w-9 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={36} height={36} className="object-contain" />
             </div>
             <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
               GlowCart
             </span>
-            <span className="text-[8px] sm:text-[9px] text-gray-300 font-normal ml-1.5 self-end mb-0.5">by TrishulHub</span>
+            <span className="text-[10px] text-gray-500 font-medium ml-0.5 self-end mb-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
           </div>
 
           {/* Navigation Tabs */}

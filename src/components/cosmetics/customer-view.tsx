@@ -165,13 +165,13 @@ function CustomerHeader() {
           onClick={() => setView('customer_shop')}
           className="flex items-center gap-2 transition-opacity hover:opacity-80"
         >
-          <div className="relative h-8 w-8 flex-shrink-0">
-            <Image src="/trishulhub-logo.png" alt="" width={32} height={32} className="object-contain" />
+          <div className="relative h-9 w-9 flex-shrink-0">
+            <Image src="/trishulhub-logo.png" alt="TrishulHub" width={36} height={36} className="object-contain" />
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
             GlowCart
           </span>
-          <span className="text-[8px] sm:text-[9px] text-gray-300 font-normal ml-2 self-end mb-0.5">by TrishulHub</span>
+          <span className="text-[10px] text-gray-500 font-medium ml-1 self-end mb-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
         </button>
 
         {/* Navigation Tabs */}
