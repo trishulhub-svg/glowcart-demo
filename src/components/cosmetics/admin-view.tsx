@@ -55,6 +55,7 @@ import {
   Cell,
 } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
+import { TrishulHubBadge } from '@/components/cosmetics/trishulhub-footer';
 import {
   LayoutDashboard,
   Package,
@@ -288,6 +289,7 @@ export default function AdminView() {
               <h1 className="text-lg font-bold tracking-tight text-gray-900">
                 Glow<span className="text-rose-500">Cart</span>
               </h1>
+              <span className="text-[8px] text-gray-300 font-normal block -mt-1">by TrishulHub</span>
               <p className="text-[10px] font-medium uppercase tracking-widest text-gray-400">
                 Admin Panel
               </p>
@@ -333,6 +335,11 @@ export default function AdminView() {
               );
             })}
           </nav>
+
+          {/* TrishulHub branding */}
+          <div className="px-3 py-2 border-t border-gray-100">
+            <TrishulHubBadge variant="light" />
+          </div>
 
           {/* User info at bottom */}
           <div className="border-t border-rose-100 p-4">

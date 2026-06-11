@@ -14,12 +14,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GlowCart — Premium Beauty, Delivered",
-  description: "Discover curated collections of luxury cosmetics, skincare, and beauty essentials. Shop premium products from world-class brands with fast delivery and real-time tracking.",
-  keywords: ["GlowCart", "cosmetics", "beauty", "skincare", "makeup", "e-commerce", "premium beauty"],
-  authors: [{ name: "GlowCart Demo" }],
+  title: "GlowCart — Premium Beauty, Delivered | by TrishulHub",
+  description: "Discover curated collections of luxury cosmetics, skincare, and beauty essentials. A TrishulHub demo — professional e-commerce with 4 user roles, real-time tracking, and industry-grade design.",
+  keywords: ["GlowCart", "TrishulHub", "cosmetics", "beauty", "skincare", "makeup", "e-commerce", "premium beauty", "demo"],
+  authors: [{ name: "TrishulHub", url: "https://github.com/trishulhub-svg" }],
   icons: {
-    icon: "/logo.svg",
+    icon: "/trishulhub-logo.png",
+  },
+  openGraph: {
+    title: "GlowCart — Premium Beauty, Delivered",
+    description: "A TrishulHub demo — professional cosmetic e-commerce with 4 user roles",
+    type: "website",
   },
 };
 

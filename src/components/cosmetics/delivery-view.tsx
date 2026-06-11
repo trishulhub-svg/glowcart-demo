@@ -35,6 +35,7 @@ import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { TrishulHubFooter } from '@/components/cosmetics/trishulhub-footer';
 
 // ─── Shipment Status Badge ─────────────────────────────────────────────────
 function ShipmentStatusBadge({ status }: { status: Shipment['status'] }) {
@@ -269,6 +270,8 @@ export default function DeliveryView() {
         </AnimatePresence>
       </main>
 
+      <TrishulHubFooter variant="light" />
+
       {/* ─── Bottom Tab Navigation ────────────────────────────────────────── */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-rose-100 bg-white/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <div className="mx-auto max-w-lg flex items-center justify-around py-2 px-2">
@@ -338,7 +341,7 @@ function DeliveryDashboard({
       {/* Greeting */}
       <div>
         <h1 className="text-xl font-bold tracking-tight">
-          Delivery <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">Hub</span>
+          Delivery <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">Hub</span><span className="text-[9px] text-gray-400 ml-2">by TrishulHub</span>
         </h1>
         <p className="text-muted-foreground text-sm mt-0.5">Manage your deliveries on the go.</p>
       </div>

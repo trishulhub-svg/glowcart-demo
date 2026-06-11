@@ -75,4 +75,5 @@ worklog.md
 agent-ctx/
 
 # Caddy config
-Caddyfile
+Caddyfiletool-results/
+tool-results/

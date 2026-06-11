@@ -48,6 +48,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { TrishulHubFooter } from '@/components/cosmetics/trishulhub-footer';
 
 // ─── Status Badge Color Mapping ────────────────────────────────────────────────
 function StatusBadge({ status }: { status: Order['status'] }) {
@@ -178,7 +179,7 @@ export default function EmployeeView() {
   // RENDER
   // ═══════════════════════════════════════════════════════════════════════════
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-rose-50/60 via-white to-amber-50/30">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       {/* ─── Top Navigation Bar ─────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-rose-100 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl flex items-center justify-between px-4 sm:px-6 h-16">
@@ -190,6 +191,7 @@ export default function EmployeeView() {
             <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
               GlowCart
             </span>
+            <span className="hidden sm:inline text-[8px] text-gray-300 font-normal ml-1.5 self-end mb-0.5">by TrishulHub</span>
           </div>
 
           {/* Navigation Tabs */}
@@ -317,6 +319,7 @@ export default function EmployeeView() {
           )}
         </AnimatePresence>
       </main>
+      <TrishulHubFooter variant="light" />
     </div>
   );
 }

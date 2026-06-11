@@ -56,6 +56,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { TrishulHubFooter } from '@/components/cosmetics/trishulhub-footer';
 import { Textarea } from '@/components/ui/textarea';
 
 // ============================================================
@@ -169,6 +170,7 @@ function CustomerHeader() {
           <span className="text-xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
             GlowCart
           </span>
+          <span className="hidden sm:inline-block text-[9px] text-gray-300 font-normal ml-2 self-end mb-0.5">by TrishulHub</span>
         </button>
 
         {/* Navigation Tabs - Desktop */}
@@ -1803,7 +1805,7 @@ export function CustomerView() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen flex flex-col bg-white">
       <CustomerHeader />
       <AnimatePresence mode="wait">
         <motion.main
@@ -1812,10 +1814,12 @@ export function CustomerView() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
+          className="flex-1"
         >
           {renderView()}
         </motion.main>
       </AnimatePresence>
+      <TrishulHubFooter variant="light" />
     </div>
   );
 }

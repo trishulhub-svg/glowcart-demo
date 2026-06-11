@@ -6,6 +6,8 @@ import { useAppStore } from '@/lib/store';
 import { type UserRole } from '@/lib/mock-data';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { TrishulHubFooter } from '@/components/cosmetics/trishulhub-footer';
 
 // ---- Role Configuration ----
 const ROLES: {
@@ -230,6 +232,30 @@ export default function LoginPage() {
           >
             Discover curated collections of luxury cosmetics, skincare, and beauty essentials from world-class brands.
           </motion.p>
+
+          {/* TrishulHub Badge */}
+          <motion.div
+            className="mt-10 flex items-center gap-2.5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1.3 }}
+          >
+            <div className="relative w-6 h-6 rounded-md overflow-hidden bg-white/15 backdrop-blur-sm flex-shrink-0">
+              <Image
+                src="/trishulhub-logo.png"
+                alt="TrishulHub"
+                width={24}
+                height={24}
+                className="object-contain"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs font-semibold text-white/90">
+                A Trishul<span className="text-sky-300">Hub</span> Product
+              </span>
+              <span className="text-[9px] text-white/40">Technology & Innovation</span>
+            </div>
+          </motion.div>
         </div>
 
         {/* Bottom gradient fade */}
@@ -252,6 +278,9 @@ export default function LoginPage() {
             Glow<span className="text-rose-500">Cart</span>
           </h1>
           <p className="text-sm text-gray-500 mt-1">Premium Beauty, Delivered</p>
+          <p className="text-[10px] text-gray-400 mt-2 flex items-center gap-1.5">
+            <span>A TrishulHub Product</span>
+          </p>
         </motion.div>
 
         {/* Main Content */}
@@ -330,38 +359,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <motion.footer
-          className="mt-auto pb-6 pt-4 px-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-        >
-          <div className="text-center space-y-3">
-            {/* Links */}
-            <div className="flex items-center justify-center gap-4 text-xs">
-              <Button
-                variant="link"
-                className="h-auto p-0 text-gray-400 hover:text-rose-500 transition-colors text-xs"
-                onClick={() => {/* Will be handled later */}}
-              >
-                Terms &amp; Conditions
-              </Button>
-              <span className="text-gray-300">|</span>
-              <Button
-                variant="link"
-                className="h-auto p-0 text-gray-400 hover:text-rose-500 transition-colors text-xs"
-                onClick={() => {/* Will be handled later */}}
-              >
-                Privacy Policy
-              </Button>
-            </div>
-
-            {/* Demo Notice */}
-            <p className="text-[11px] text-gray-400 leading-relaxed">
-              This is a demo site. No real data is collected.
-            </p>
-          </div>
-        </motion.footer>
+        <TrishulHubFooter variant="light" className="mt-auto" />
       </div>
     </div>
   );
