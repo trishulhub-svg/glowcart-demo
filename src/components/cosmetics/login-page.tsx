@@ -240,7 +240,7 @@ export default function LoginPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
           >
-            <div className="relative w-6 h-6 rounded-md overflow-hidden bg-white/15 backdrop-blur-sm flex-shrink-0">
+            <div className="relative w-6 h-6 flex-shrink-0">
               <Image
                 src="/trishulhub-logo.png"
                 alt="TrishulHub"

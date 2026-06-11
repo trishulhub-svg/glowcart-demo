@@ -28,13 +28,14 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Left: TrishulHub Branding */}
           <div className="flex items-center gap-3">
-            <div className="relative w-7 h-7 rounded-lg overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center flex-shrink-0">
+            <div className="relative w-8 h-8 flex-shrink-0">
               <Image
                 src="/trishulhub-logo.png"
                 alt="TrishulHub"
-                width={28}
-                height={28}
+                width={32}
+                height={32}
                 className="object-contain"
+                priority
               />
             </div>
             <div className="flex flex-col">
@@ -102,7 +103,7 @@ export function TrishulHubBadge({ variant = 'light' }: { variant?: 'light' | 'da
   const isDark = variant === 'dark';
   return (
     <div className="flex items-center gap-2">
-      <div className="relative w-5 h-5 rounded-md overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 flex-shrink-0">
+      <div className="relative w-5 h-5 flex-shrink-0">
         <Image
           src="/trishulhub-logo.png"
           alt=""

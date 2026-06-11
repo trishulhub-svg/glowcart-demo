@@ -77,3 +77,4 @@ agent-ctx/
 # Caddy config
 Caddyfiletool-results/
 tool-results/
+upload/
