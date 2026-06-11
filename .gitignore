@@ -52,3 +52,27 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Z scripts and internal files
+.zscripts/
+
+# Download / screenshots
+download/
+
+# Database
+db/
+
+# Examples
+examples/
+
+# Mini services
+mini-services/
+
+# Worklog
+worklog.md
+
+# Agent context
+agent-ctx/
+
+# Caddy config
+Caddyfile
