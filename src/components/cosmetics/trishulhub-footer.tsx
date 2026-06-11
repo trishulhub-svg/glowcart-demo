@@ -23,12 +23,12 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
       animate={{ opacity: 1 }}
       transition={{ delay: 0.5, duration: 0.5 }}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6">
         {/* Main Footer Row */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           {/* Left: TrishulHub Branding */}
-          <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 flex-shrink-0">
+          <div className="flex items-center gap-2.5">
+            <div className="relative w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0">
               <Image
                 src="/trishulhub-logo.png"
                 alt="TrishulHub"
@@ -39,30 +39,30 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
               />
             </div>
             <div className="flex flex-col">
-              <span className={`text-sm font-semibold tracking-tight ${isDark ? 'text-white' : 'text-gray-800'}`}>
+              <span className={`text-xs sm:text-sm font-semibold tracking-tight ${isDark ? 'text-white' : 'text-gray-800'}`}>
                 Trishul<span className={isDark ? 'text-sky-400' : 'text-sky-600'}>Hub</span>
               </span>
-              <span className={`text-[10px] ${subTextColor} -mt-0.5`}>Technology & Innovation</span>
+              <span className={`text-[9px] sm:text-[10px] ${subTextColor} -mt-0.5`}>Technology & Innovation</span>
             </div>
           </div>
 
           {/* Center: Product Badge */}
-          <div className="flex items-center gap-2">
-            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-200'}`}>
+          <div className="flex items-center gap-2 order-3 sm:order-2">
+            <div className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-200'}`}>
               <Sparkles className={`w-3 h-3 ${isDark ? 'text-rose-400' : 'text-rose-500'}`} />
-              <span className={`text-[11px] font-medium ${textColor}`}>
+              <span className={`text-[10px] sm:text-[11px] font-medium ${textColor}`}>
                 GlowCart — A TrishulHub Product
               </span>
             </div>
           </div>
 
           {/* Right: Links */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 order-2 sm:order-3">
             <a
               href="https://github.com/trishulhub-svg"
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center gap-1 text-xs ${linkColor} transition-colors`}
+              className={`flex items-center gap-1 text-[11px] sm:text-xs ${linkColor} transition-colors min-h-[32px]`}
             >
               GitHub <ExternalLink className="w-3 h-3" />
             </a>
@@ -70,27 +70,27 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
               href="https://github.com/trishulhub-svg/glowcart-demo"
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center gap-1 text-xs ${linkColor} transition-colors`}
+              className={`flex items-center gap-1 text-[11px] sm:text-xs ${linkColor} transition-colors min-h-[32px]`}
             >
-              Source Code <ExternalLink className="w-3 h-3" />
+              Source <ExternalLink className="w-3 h-3" />
             </a>
           </div>
         </div>
 
         {/* Divider */}
-        <div className={`h-px ${dividerColor} my-4`} />
+        <div className={`h-px ${dividerColor} my-3 sm:my-4`} />
 
         {/* Bottom Row */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className={`text-[11px] ${subTextColor}`}>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2">
+          <p className={`text-[10px] sm:text-[11px] ${subTextColor}`}>
             &copy; {new Date().getFullYear()} TrishulHub. All rights reserved.
           </p>
-          <div className="flex items-center gap-1">
-            <span className={`text-[10px] ${subTextColor}`}>Protocol v11.0</span>
-            <span className={`text-[10px] ${subTextColor}`}>·</span>
-            <span className={`text-[10px] ${subTextColor}`}>Demo Environment</span>
-            <span className={`text-[10px] ${subTextColor}`}>·</span>
-            <span className={`text-[10px] ${subTextColor}`}>No real data collected</span>
+          <div className="flex items-center gap-1 flex-wrap justify-center">
+            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>Protocol v11.0</span>
+            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>·</span>
+            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>Demo Environment</span>
+            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>·</span>
+            <span className={`text-[9px] sm:text-[10px] ${subTextColor}`}>No real data collected</span>
           </div>
         </div>
       </div>

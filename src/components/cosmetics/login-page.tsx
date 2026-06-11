@@ -189,8 +189,8 @@ export default function LoginPage() {
             transition={{ duration: 0.7, delay: 0.3, type: 'spring', stiffness: 200 }}
             className="mb-8"
           >
-            <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 shadow-lg">
-              <Sparkles className="w-10 h-10 text-white" strokeWidth={1.5} />
+            <div className="relative w-20 h-20 flex-shrink-0 mb-2">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={80} height={80} className="object-contain drop-shadow-lg" />
             </div>
           </motion.div>
 
@@ -235,22 +235,22 @@ export default function LoginPage() {
 
           {/* TrishulHub Badge */}
           <motion.div
-            className="mt-10 flex items-center gap-2.5"
+            className="mt-12 flex items-center gap-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
           >
-            <div className="relative w-6 h-6 flex-shrink-0">
+            <div className="relative w-8 h-8 flex-shrink-0">
               <Image
                 src="/trishulhub-logo.png"
                 alt="TrishulHub"
-                width={24}
-                height={24}
+                width={32}
+                height={32}
                 className="object-contain"
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-semibold text-white/90">
+              <span className="text-sm font-semibold text-white/90">
                 A Trishul<span className="text-sky-300">Hub</span> Product
               </span>
               <span className="text-[9px] text-white/40">Technology & Innovation</span>
@@ -271,20 +271,21 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 shadow-lg mb-4">
-            <Sparkles className="w-7 h-7 text-white" strokeWidth={1.5} />
+          <div className="flex items-center gap-2 mb-4">
+            <div className="relative w-10 h-10 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={40} height={40} className="object-contain" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+                Glow<span className="text-rose-500">Cart</span>
+              </h1>
+              <p className="text-[10px] text-gray-400 -mt-0.5">Premium Beauty, Delivered</p>
+            </div>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Glow<span className="text-rose-500">Cart</span>
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">Premium Beauty, Delivered</p>
-          <p className="text-[10px] text-gray-400 mt-2 flex items-center gap-1.5">
-            <span>A TrishulHub Product</span>
-          </p>
         </motion.div>
 
         {/* Main Content */}
-        <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-12 py-8">
+        <div className="flex-1 flex items-center justify-center px-5 sm:px-6 lg:px-12 py-8">
           <motion.div
             className="w-full max-w-md"
             variants={containerVariants}
@@ -302,7 +303,7 @@ export default function LoginPage() {
             </motion.div>
 
             {/* Role Selection Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <AnimatePresence>
                 {ROLES.map((roleConfig, index) => {
                   const IconComp = roleConfig.icon;
@@ -313,27 +314,27 @@ export default function LoginPage() {
                       custom={index}
                       whileHover={{ scale: 1.03, y: -2 }}
                       whileTap={{ scale: 0.98 }}
-                      className="sm:col-span-1"
+                      className="col-span-1"
                     >
                       <Card
                         className={`cursor-pointer group border border-gray-200/80 bg-gradient-to-br ${roleConfig.gradient} ${roleConfig.borderColor} transition-all duration-300 hover:shadow-lg hover:shadow-rose-100/50 py-0 gap-0 overflow-hidden`}
                         onClick={() => login(roleConfig.role)}
                       >
-                        <CardContent className="p-4 sm:p-5">
+                        <CardContent className="p-3 sm:p-5">
                           <div className="flex items-start gap-3">
                             {/* Icon */}
-                            <div className={`flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg ${roleConfig.iconBg} ${roleConfig.iconColor} transition-transform duration-300 group-hover:scale-110`}>
-                              <IconComp className="w-5 h-5" strokeWidth={1.8} />
+                            <div className={`flex-shrink-0 flex items-center justify-center w-8 h-8 sm:w-10 h-10 rounded-lg ${roleConfig.iconBg} ${roleConfig.iconColor} transition-transform duration-300 group-hover:scale-110`}>
+                              <IconComp className="w-4 h-4 sm:w-5 h-5" strokeWidth={1.8} />
                             </div>
                             {/* Text */}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between">
-                                <h3 className="text-sm font-semibold text-gray-900">
+                                <h3 className="text-xs sm:text-sm font-semibold text-gray-900">
                                   {roleConfig.label}
                                 </h3>
                                 <ArrowRight className="w-4 h-4 text-gray-400 opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
                               </div>
-                              <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                              <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 leading-relaxed">
                                 {roleConfig.description}
                               </p>
                             </div>

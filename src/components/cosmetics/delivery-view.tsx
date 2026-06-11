@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home,
@@ -176,12 +177,13 @@ export default function DeliveryView() {
       <header className="sticky top-0 z-50 border-b border-rose-100 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-lg flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 shadow-md shadow-rose-200">
-              <Truck className="h-4 w-4 text-white" />
+            <div className="relative h-7 w-7 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="" width={28} height={28} className="object-contain" />
             </div>
             <span className="text-base font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
-              GlowCart
+              Delivery Hub
             </span>
+            <span className="text-[8px] sm:text-[9px] text-gray-400 font-normal ml-1 self-end mb-0.5">by TrishulHub</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -201,7 +203,7 @@ export default function DeliveryView() {
       </header>
 
       {/* ─── Main Content ─────────────────────────────────────────────────── */}
-      <main className="flex-1 mx-auto w-full max-w-lg px-4 py-5 pb-24">
+      <main className="flex-1 mx-auto w-full max-w-lg px-4 py-5 pb-20">
         <AnimatePresence mode="wait">
           {currentView === 'delivery_dashboard' && (
             <motion.div
@@ -274,7 +276,7 @@ export default function DeliveryView() {
 
       {/* ─── Bottom Tab Navigation ────────────────────────────────────────── */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-rose-100 bg-white/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-        <div className="mx-auto max-w-lg flex items-center justify-around py-2 px-2">
+        <div className="mx-auto max-w-lg flex items-center justify-around py-1.5 px-2 min-h-[52px]">
           {[
             { key: 'home', label: 'Home', icon: Home, view: 'delivery_dashboard' },
             { key: 'active', label: 'Active', icon: Truck, view: 'delivery_active' },
@@ -286,7 +288,7 @@ export default function DeliveryView() {
               <button
                 key={tab.key}
                 onClick={() => handleTabChange(tab.key)}
-                className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl transition-all ${
+                className={`flex flex-col items-center justify-center gap-0.5 py-1.5 px-3 rounded-xl transition-all min-h-[44px] min-w-[44px] ${
                   isActive
                     ? 'text-rose-600 bg-rose-50 scale-105'
                     : 'text-muted-foreground hover:text-rose-400'
@@ -299,7 +301,7 @@ export default function DeliveryView() {
                 {isActive && (
                   <motion.div
                     layoutId="deliveryTabIndicator"
-                    className="h-0.5 w-4 rounded-full bg-rose-500 -mt-0.5"
+                    className="h-0.5 w-4 rounded-full bg-rose-500"
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
                 )}
@@ -340,15 +342,21 @@ function DeliveryDashboard({
     <div className="space-y-5">
       {/* Greeting */}
       <div>
-        <h1 className="text-xl font-bold tracking-tight">
-          Delivery <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">Hub</span><span className="text-[9px] text-gray-400 ml-2">by TrishulHub</span>
-        </h1>
+        <div className="flex items-center gap-2">
+          <div className="relative h-6 w-6 flex-shrink-0">
+            <Image src="/trishulhub-logo.png" alt="" width={24} height={24} className="object-contain" />
+          </div>
+          <h1 className="text-xl font-bold tracking-tight">
+            Delivery <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">Hub</span>
+          </h1>
+          <span className="text-[8px] sm:text-[9px] text-gray-400 font-normal ml-1">by TrishulHub</span>
+        </div>
         <p className="text-muted-foreground text-sm mt-0.5">Manage your deliveries on the go.</p>
       </div>
 
       {/* Stats */}
       <motion.div
-        className="grid grid-cols-3 gap-3"
+        className="grid grid-cols-3 gap-2 sm:gap-3"
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -357,10 +365,10 @@ function DeliveryDashboard({
           <motion.div key={stat.label} variants={itemVariants}>
             <Card className="border-0 shadow-md text-center overflow-hidden">
               <CardContent className="p-3">
-                <div className={`mx-auto mb-1.5 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br ${stat.color} shadow-md ${stat.shadow}`}>
-                  <stat.icon className="h-4 w-4 text-white" />
+                <div className={`mx-auto mb-1.5 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-gradient-to-br ${stat.color} shadow-md ${stat.shadow}`}>
+                  <stat.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
                 </div>
-                <p className="text-2xl font-bold">{stat.value}</p>
+                <p className="text-lg sm:text-xl font-bold">{stat.value}</p>
                 <p className="text-[11px] text-muted-foreground font-medium">{stat.label}</p>
               </CardContent>
               <div className={`h-1 bg-gradient-to-r ${stat.color}`} />
@@ -405,7 +413,7 @@ function DeliveryDashboard({
                   transition={{ delay: i * 0.05 }}
                 >
                   <Card className="border-0 shadow-md hover:shadow-lg transition-shadow overflow-hidden">
-                    <CardContent className="p-4">
+                    <CardContent className="p-3 sm:p-4">
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <p className="font-mono text-sm font-bold text-rose-700">{shipment.orderId}</p>
@@ -517,7 +525,7 @@ function DeliveryActive({
                   </div>
 
                   {/* Map Placeholder */}
-                  <div className="relative rounded-xl bg-gradient-to-br from-slate-100 to-slate-50 border border-slate-200 h-36 flex items-center justify-center overflow-hidden">
+                  <div className="relative rounded-xl bg-gradient-to-br from-slate-100 to-slate-50 border border-slate-200 aspect-[16/9] sm:h-36 flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 opacity-10">
                       <div className="absolute top-2 left-4 w-20 h-0.5 bg-slate-400 rotate-12" />
                       <div className="absolute top-8 left-10 w-32 h-0.5 bg-slate-400 -rotate-6" />
@@ -574,7 +582,7 @@ function DeliveryActive({
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                       Update Status
                     </p>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {DELIVERY_STATUS_FLOW.map((step) => {
                         const isNextStep = getStatusIndex(step.key) === currentIdx + 1;
                         const isPast = getStatusIndex(step.key) <= currentIdx;
@@ -583,7 +591,7 @@ function DeliveryActive({
                             key={step.key}
                             size="sm"
                             disabled={isPast}
-                            className={`text-xs ${
+                            className={`text-xs min-h-[44px] ${
                               isNextStep
                                 ? `${step.color} text-white shadow-sm`
                                 : isPast
@@ -658,13 +666,13 @@ function DeliveryHistory({
       </div>
 
       {/* Date Filter */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1">
         {(['all', 'week', 'month'] as const).map((period) => (
           <Button
             key={period}
             size="sm"
             variant={filterPeriod === period ? 'default' : 'outline'}
-            className={`text-xs ${
+            className={`text-xs min-h-[44px] whitespace-nowrap ${
               filterPeriod === period
                 ? 'bg-rose-500 hover:bg-rose-600 text-white'
                 : 'border-rose-200 text-rose-700 hover:bg-rose-50'
@@ -695,11 +703,11 @@ function DeliveryHistory({
               transition={{ delay: i * 0.04 }}
             >
               <Card className="border-0 shadow-md hover:shadow-lg transition-shadow overflow-hidden">
-                <CardContent className="p-4">
+                <CardContent className="p-3 sm:p-4">
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
-                        <CheckCircle2 className="h-5 w-5" />
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
+                        <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
                       </div>
                       <div>
                         <p className="font-mono text-sm font-bold text-rose-700">{item.orderId}</p>
@@ -719,7 +727,7 @@ function DeliveryHistory({
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-1 text-muted-foreground">
                       <MapPin className="h-3.5 w-3.5" />
-                      <span className="truncate max-w-[180px] text-xs">{item.address}</span>
+                      <span className="truncate max-w-[120px] sm:max-w-[180px] text-xs">{item.address}</span>
                     </div>
                     <span className="font-semibold text-xs">{formatCurrency(item.total)}</span>
                   </div>
@@ -753,8 +761,8 @@ function DeliveryProfile({
       {/* Profile Header */}
       <Card className="border-0 shadow-lg overflow-hidden">
         <div className="h-20 bg-gradient-to-r from-rose-500 to-pink-500" />
-        <CardContent className="p-4 -mt-8">
-          <div className="flex items-end gap-4">
+        <CardContent className="p-3 sm:p-4 -mt-8">
+          <div className="flex flex-col items-center text-center sm:flex-row sm:items-end sm:text-left gap-3 sm:gap-4">
             <Avatar className="h-16 w-16 border-4 border-white shadow-lg">
               <AvatarFallback className="bg-rose-100 text-rose-700 text-xl font-bold">
                 {currentUser?.avatar || 'AP'}
@@ -807,21 +815,21 @@ function DeliveryProfile({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-3 gap-3">
-            <div className="text-center rounded-xl bg-rose-50/70 p-3 border border-rose-100">
-              <p className="text-2xl font-bold text-rose-700">{profileStats.totalDeliveries}</p>
-              <p className="text-[10px] font-medium text-muted-foreground">Total Deliveries</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+            <div className="text-center rounded-xl bg-rose-50/70 p-2 sm:p-3 border border-rose-100">
+              <p className="text-lg sm:text-2xl font-bold text-rose-700">{profileStats.totalDeliveries}</p>
+              <p className="text-[9px] sm:text-[10px] font-medium text-muted-foreground">Total Deliveries</p>
             </div>
-            <div className="text-center rounded-xl bg-amber-50/70 p-3 border border-amber-100">
+            <div className="text-center rounded-xl bg-amber-50/70 p-2 sm:p-3 border border-amber-100">
               <div className="flex items-center justify-center gap-1">
-                <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
-                <p className="text-2xl font-bold text-amber-700">{profileStats.rating}</p>
+                <Star className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-amber-500 fill-amber-500" />
+                <p className="text-lg sm:text-2xl font-bold text-amber-700">{profileStats.rating}</p>
               </div>
-              <p className="text-[10px] font-medium text-muted-foreground">Rating</p>
+              <p className="text-[9px] sm:text-[10px] font-medium text-muted-foreground">Rating</p>
             </div>
-            <div className="text-center rounded-xl bg-emerald-50/70 p-3 border border-emerald-100">
-              <p className="text-2xl font-bold text-emerald-700">{profileStats.onTimePercent}%</p>
-              <p className="text-[10px] font-medium text-muted-foreground">On-Time</p>
+            <div className="text-center rounded-xl bg-emerald-50/70 p-2 sm:p-3 border border-emerald-100 col-span-2 sm:col-span-1">
+              <p className="text-lg sm:text-2xl font-bold text-emerald-700">{profileStats.onTimePercent}%</p>
+              <p className="text-[9px] sm:text-[10px] font-medium text-muted-foreground">On-Time</p>
             </div>
           </div>
 
@@ -853,7 +861,7 @@ function DeliveryProfile({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-100 p-4">
+          <div className="rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-100 p-3 sm:p-4">
             <div className="flex items-center gap-3 mb-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 text-white shadow-md shadow-rose-200">
                 <Bike className="h-6 w-6" />

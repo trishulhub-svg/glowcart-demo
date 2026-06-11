@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { useAppStore } from '@/lib/store';
 import { type Order, ADMIN_STATS, DEMO_USERS, PRODUCTS } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
@@ -282,14 +283,16 @@ export default function AdminView() {
         >
           {/* Logo */}
           <div className="flex h-16 items-center gap-2 border-b border-rose-100 px-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 shadow-md shadow-rose-200">
-              <Sparkles className="h-5 w-5 text-white" />
+            <div className="relative h-8 w-8 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="" width={32} height={32} className="object-contain" />
             </div>
             <div>
               <h1 className="text-lg font-bold tracking-tight text-gray-900">
                 Glow<span className="text-rose-500">Cart</span>
               </h1>
-              <span className="text-[8px] text-gray-300 font-normal block -mt-1">by TrishulHub</span>
+              <div className="mt-1">
+                <span className="text-[8px] text-gray-300 font-normal">by TrishulHub</span>
+              </div>
               <p className="text-[10px] font-medium uppercase tracking-widest text-gray-400">
                 Admin Panel
               </p>
@@ -337,7 +340,7 @@ export default function AdminView() {
           </nav>
 
           {/* TrishulHub branding */}
-          <div className="px-3 py-2 border-t border-gray-100">
+          <div className="py-3 px-3 border-t border-gray-100">
             <TrishulHubBadge variant="light" />
           </div>
 
@@ -396,7 +399,7 @@ export default function AdminView() {
                 <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
                   {title}
                 </p>
-                <p className="text-2xl font-bold tracking-tight text-gray-900">{value}</p>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-gray-900">{value}</p>
                 <div className="flex items-center gap-1.5">
                   {isPositive ? (
                     <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />
@@ -469,7 +472,7 @@ export default function AdminView() {
         </div>
 
         {/* Stats Row */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           <StatCard
             title="Total Revenue"
             value={formatCurrency(ADMIN_STATS.totalRevenue)}
@@ -501,7 +504,7 @@ export default function AdminView() {
         </div>
 
         {/* Charts Row */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
           {/* Revenue Chart */}
           <motion.div variants={staggerItem} className="lg:col-span-2">
             <Card className="border-0 shadow-md shadow-gray-100/50">
@@ -630,7 +633,7 @@ export default function AdminView() {
         </div>
 
         {/* Recent Orders + Top Products */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-5">
           {/* Recent Orders */}
           <motion.div variants={staggerItem} className="lg:col-span-3">
             <Card className="border-0 shadow-md shadow-gray-100/50">
@@ -653,7 +656,7 @@ export default function AdminView() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="max-h-80 overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin' }}>
+                <div className="max-h-80 overflow-y-auto overflow-x-auto pr-1" style={{ scrollbarWidth: 'thin' }}>
                   <Table>
                     <TableHeader>
                       <TableRow className="hover:bg-transparent">
@@ -736,7 +739,7 @@ export default function AdminView() {
                             <span className="flex h-6 w-6 items-center justify-center rounded-md bg-rose-50 text-xs font-bold text-rose-500">
                               {i + 1}
                             </span>
-                            <span className="text-sm font-medium text-gray-700 truncate max-w-[160px]">
+                            <span className="text-sm font-medium text-gray-700 truncate max-w-[120px] sm:max-w-[160px]">
                               {product.name}
                             </span>
                           </div>
@@ -842,9 +845,9 @@ export default function AdminView() {
 
         {/* Search/Filter Bar */}
         <Card className="border-0 shadow-md shadow-gray-100/50">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <div className="relative flex-1">
+              <div className="relative flex-1 w-full">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
@@ -865,8 +868,8 @@ export default function AdminView() {
         {/* Products Table */}
         <Card className="border-0 shadow-md shadow-gray-100/50">
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <Table>
+            <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+              <Table className="min-w-[700px]">
                 <TableHeader>
                   <TableRow className="hover:bg-transparent bg-gray-50/50">
                     <TableHead className="text-xs font-semibold uppercase text-gray-500">
@@ -967,7 +970,7 @@ export default function AdminView() {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="h-9 w-9 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity min-h-[44px] min-w-[44px]"
                               >
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
@@ -1026,10 +1029,10 @@ export default function AdminView() {
               Manage customer orders ({orders.length} total)
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm text-gray-400">Filter:</span>
             <Select value={orderStatusFilter} onValueChange={setOrderStatusFilter}>
-              <SelectTrigger className="w-[160px] h-9 text-sm">
+              <SelectTrigger className="w-[140px] sm:w-[160px] h-9 text-sm">
                 <SelectValue placeholder="All Statuses" />
               </SelectTrigger>
               <SelectContent>
@@ -1048,8 +1051,8 @@ export default function AdminView() {
         {/* Orders Table */}
         <Card className="border-0 shadow-md shadow-gray-100/50">
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <Table>
+            <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+              <Table className="min-w-[800px]">
                 <TableHeader>
                   <TableRow className="hover:bg-transparent bg-gray-50/50">
                     <TableHead className="text-xs font-semibold uppercase text-gray-500">
@@ -1157,7 +1160,7 @@ export default function AdminView() {
 
         {/* Order Detail Dialog */}
         <Dialog open={orderDetailOpen} onOpenChange={setOrderDetailOpen}>
-          <DialogContent className="max-w-lg">
+          <DialogContent className="w-[95vw] max-w-lg">
             {selectedOrder && (
               <>
                 <DialogHeader>
@@ -1313,8 +1316,8 @@ export default function AdminView() {
         {/* Users Table */}
         <Card className="border-0 shadow-md shadow-gray-100/50">
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <Table>
+            <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+              <Table className="min-w-[650px]">
                 <TableHeader>
                   <TableRow className="hover:bg-transparent bg-gray-50/50">
                     <TableHead className="text-xs font-semibold uppercase text-gray-500">
@@ -1559,21 +1562,23 @@ export default function AdminView() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50/80">
+    <div className="min-h-screen flex bg-gray-50/80">
       <Sidebar />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-hidden flex flex-col">
         {/* Top Bar (Mobile) */}
-        <div className="flex h-14 items-center gap-3 border-b border-gray-100 bg-white px-4 lg:hidden">
+        <div className="flex h-14 items-center gap-3 border-b border-gray-100 bg-white px-3 sm:px-4 lg:hidden">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100"
+            className="rounded-md p-2 text-gray-500 hover:bg-gray-100 min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             <Menu className="h-5 w-5" />
           </button>
           <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-rose-500" />
+            <div className="relative h-5 w-5 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="" width={20} height={20} className="object-contain" />
+            </div>
             <span className="text-sm font-bold text-gray-900">
               Glow<span className="text-rose-500">Cart</span>
             </span>
@@ -1588,7 +1593,7 @@ export default function AdminView() {
         </div>
 
         {/* Page Content */}
-        <div className="h-[calc(100vh-3.5rem)] overflow-y-auto p-4 sm:p-6 lg:h-screen lg:p-8">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6 lg:h-screen">
           <AnimatePresence mode="wait">{renderSubView()}</AnimatePresence>
         </div>
       </main>

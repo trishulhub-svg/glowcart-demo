@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Package,
@@ -185,13 +186,13 @@ export default function EmployeeView() {
         <div className="mx-auto max-w-7xl flex items-center justify-between px-4 sm:px-6 h-16">
           {/* Logo */}
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 shadow-md shadow-rose-200">
-              <Package className="h-5 w-5 text-white" />
+            <div className="relative h-8 w-8 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="" width={32} height={32} className="object-contain" />
             </div>
             <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
               GlowCart
             </span>
-            <span className="hidden sm:inline text-[8px] text-gray-300 font-normal ml-1.5 self-end mb-0.5">by TrishulHub</span>
+            <span className="text-[8px] sm:text-[9px] text-gray-300 font-normal ml-1.5 self-end mb-0.5">by TrishulHub</span>
           </div>
 
           {/* Navigation Tabs */}
@@ -199,30 +200,30 @@ export default function EmployeeView() {
             <TabsList className="bg-rose-50/80 hidden sm:flex">
               <TabsTrigger value="dashboard" className="data-[state=active]:bg-rose-500 data-[state=active]:text-white gap-1.5">
                 <BarChart3 className="h-4 w-4" />
-                Dashboard
+                <span className="hidden sm:inline">Dashboard</span>
               </TabsTrigger>
               <TabsTrigger value="orders" className="data-[state=active]:bg-rose-500 data-[state=active]:text-white gap-1.5">
                 <ClipboardList className="h-4 w-4" />
-                Orders
+                <span className="hidden sm:inline">Orders</span>
               </TabsTrigger>
               <TabsTrigger value="inventory" className="data-[state=active]:bg-rose-500 data-[state=active]:text-white gap-1.5">
                 <Warehouse className="h-4 w-4" />
-                Inventory
+                <span className="hidden sm:inline">Inventory</span>
               </TabsTrigger>
             </TabsList>
           </Tabs>
 
           {/* User + Logout */}
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="relative text-rose-600 hover:text-rose-700 hover:bg-rose-50">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Button variant="ghost" size="icon" className="relative text-rose-600 hover:text-rose-700 hover:bg-rose-50 min-h-[44px] min-w-[44px]">
               <Bell className="h-5 w-5" />
               <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white">
                 3
               </span>
             </Button>
-            <Separator orientation="vertical" className="h-6" />
+            <Separator orientation="vertical" className="h-6 hidden sm:block" />
             <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8 border-2 border-rose-200">
+              <Avatar className="h-8 w-8 border-2 border-rose-200 min-h-[44px] min-w-[44px]">
                 <AvatarFallback className="bg-rose-100 text-rose-700 text-xs font-semibold">
                   {currentUser?.avatar || 'RV'}
                 </AvatarFallback>
@@ -237,7 +238,7 @@ export default function EmployeeView() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+              className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 min-h-[44px] min-w-[44px]"
               onClick={logout}
             >
               <LogOut className="h-5 w-5" />
@@ -249,17 +250,17 @@ export default function EmployeeView() {
         <div className="sm:hidden border-t border-rose-50 px-2 py-1">
           <Tabs value={activeTab} onValueChange={handleTabChange}>
             <TabsList className="w-full bg-rose-50/80">
-              <TabsTrigger value="dashboard" className="flex-1 data-[state=active]:bg-rose-500 data-[state=active]:text-white text-xs gap-1">
-                <BarChart3 className="h-3.5 w-3.5" />
-                Dashboard
+              <TabsTrigger value="dashboard" className="flex-1 data-[state=active]:bg-rose-500 data-[state=active]:text-white text-xs gap-1 min-h-[44px]">
+                <BarChart3 className="h-4 w-4" />
+                <span className="hidden sm:inline">Dashboard</span>
               </TabsTrigger>
-              <TabsTrigger value="orders" className="flex-1 data-[state=active]:bg-rose-500 data-[state=active]:text-white text-xs gap-1">
-                <ClipboardList className="h-3.5 w-3.5" />
-                Orders
+              <TabsTrigger value="orders" className="flex-1 data-[state=active]:bg-rose-500 data-[state=active]:text-white text-xs gap-1 min-h-[44px]">
+                <ClipboardList className="h-4 w-4" />
+                <span className="hidden sm:inline">Orders</span>
               </TabsTrigger>
-              <TabsTrigger value="inventory" className="flex-1 data-[state=active]:bg-rose-500 data-[state=active]:text-white text-xs gap-1">
-                <Warehouse className="h-3.5 w-3.5" />
-                Inventory
+              <TabsTrigger value="inventory" className="flex-1 data-[state=active]:bg-rose-500 data-[state=active]:text-white text-xs gap-1 min-h-[44px]">
+                <Warehouse className="h-4 w-4" />
+                <span className="hidden sm:inline">Inventory</span>
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -267,7 +268,7 @@ export default function EmployeeView() {
       </header>
 
       {/* ─── Main Content ─────────────────────────────────────────────────── */}
-      <main className="flex-1 mx-auto w-full max-w-7xl px-4 sm:px-6 py-6">
+      <main className="flex-1 mx-auto w-full max-w-7xl p-3 sm:p-4 lg:p-6">
         <AnimatePresence mode="wait">
           {currentView === 'employee_dashboard' && (
             <motion.div
@@ -393,7 +394,7 @@ function EmployeeDashboard({
 
       {/* Stats Cards */}
       <motion.div
-        className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+        className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -401,16 +402,16 @@ function EmployeeDashboard({
         {stats.map((stat) => (
           <motion.div key={stat.label} variants={itemVariants}>
             <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="p-5">
+              <CardContent className="p-3 sm:p-5">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       {stat.label}
                     </p>
-                    <p className="text-3xl font-bold mt-1.5">{stat.value}</p>
+                    <p className="text-xl sm:text-2xl font-bold mt-1.5">{stat.value}</p>
                   </div>
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${stat.color} shadow-md ${stat.shadow}`}>
-                    <stat.icon className="h-5 w-5 text-white" />
+                  <div className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-gradient-to-br ${stat.color} shadow-md ${stat.shadow}`}>
+                    <stat.icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   </div>
                 </div>
               </CardContent>
@@ -423,14 +424,14 @@ function EmployeeDashboard({
       {/* Quick Actions */}
       <div>
         <h2 className="text-lg font-semibold mb-3">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
           {quickActions.map((action) => (
             <motion.button
               key={action.label}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setView(action.view)}
-              className={`flex items-center gap-3 ${action.color} text-white rounded-xl px-5 py-4 shadow-md transition-colors`}
+              className={`flex items-center gap-3 ${action.color} text-white rounded-xl px-4 py-3 sm:px-5 sm:py-4 shadow-md transition-colors`}
             >
               <action.icon className="h-5 w-5" />
               <span className="font-medium">{action.label}</span>
@@ -518,7 +519,7 @@ function EmployeeOrders({
           </CardContent>
         </Card>
       ) : (
-        <Card className="border-0 shadow-lg overflow-hidden">
+        <Card className="border-0 shadow-lg overflow-x-auto">
           {/* Desktop Table */}
           <div className="hidden md:block">
             <Table>
@@ -568,7 +569,7 @@ function EmployeeOrders({
                         {getNextStatus(order.status) && (
                           <Button
                             size="sm"
-                            className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-sm"
+                            className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-sm min-h-[44px]"
                             onClick={() => handleProcessOrder(order.id)}
                           >
                             <RefreshCw className="h-3.5 w-3.5 mr-1" />
@@ -578,7 +579,7 @@ function EmployeeOrders({
                         <Select
                           onValueChange={(val) => handleStatusChange(order.id, val)}
                         >
-                          <SelectTrigger className="w-7 h-7 p-0 border-0 hover:bg-rose-50">
+                          <SelectTrigger className="w-8 h-8 sm:w-7 sm:h-7 p-0 border-0 hover:bg-rose-50 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0">
                             <ChevronDown className="h-4 w-4 text-muted-foreground" />
                           </SelectTrigger>
                           <SelectContent>
@@ -623,7 +624,7 @@ function EmployeeOrders({
                     {getNextStatus(order.status) && (
                       <Button
                         size="sm"
-                        className="bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-sm h-8 text-xs"
+                        className="bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-sm min-h-[44px] text-xs"
                         onClick={() => handleProcessOrder(order.id)}
                       >
                         <RefreshCw className="h-3 w-3 mr-1" />
@@ -633,7 +634,7 @@ function EmployeeOrders({
                     <Select
                       onValueChange={(val) => handleStatusChange(order.id, val)}
                     >
-                      <SelectTrigger className="w-7 h-7 p-0 border-0">
+                      <SelectTrigger className="w-8 h-8 sm:w-7 sm:h-7 p-0 border-0 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0">
                         <ChevronDown className="h-4 w-4 text-muted-foreground" />
                       </SelectTrigger>
                       <SelectContent>
@@ -708,7 +709,7 @@ function EmployeeInventory({
 
       {/* Product Grid */}
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -778,7 +779,7 @@ function EmployeeInventory({
                   <Button
                     size="sm"
                     variant={isLow ? 'default' : 'outline'}
-                    className={`w-full text-xs ${
+                    className={`w-full text-xs min-h-[44px] ${
                       isLow
                         ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-sm'
                         : 'border-rose-200 text-rose-700 hover:bg-rose-50'

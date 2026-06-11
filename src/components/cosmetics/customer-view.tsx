@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ShoppingCart,
@@ -164,17 +165,17 @@ function CustomerHeader() {
           onClick={() => setView('customer_shop')}
           className="flex items-center gap-2 transition-opacity hover:opacity-80"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 text-white">
-            <Sparkles className="h-4 w-4" />
+          <div className="relative h-8 w-8 flex-shrink-0">
+            <Image src="/trishulhub-logo.png" alt="" width={32} height={32} className="object-contain" />
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
             GlowCart
           </span>
-          <span className="hidden sm:inline-block text-[9px] text-gray-300 font-normal ml-2 self-end mb-0.5">by TrishulHub</span>
+          <span className="text-[8px] sm:text-[9px] text-gray-300 font-normal ml-2 self-end mb-0.5">by TrishulHub</span>
         </button>
 
-        {/* Navigation Tabs - Desktop */}
-        <nav className="hidden md:flex items-center gap-1">
+        {/* Navigation Tabs */}
+        <nav className="flex items-center sm:gap-1">
           {navItems.map((item) => (
             <Button
               key={item.view}
@@ -187,8 +188,8 @@ function CustomerHeader() {
                   : 'text-gray-600 hover:text-rose-600 hover:bg-rose-50'
               }
             >
-              <item.icon className="mr-1.5 h-4 w-4" />
-              {item.label}
+              <item.icon className="h-4 w-4 sm:mr-1.5" />
+              <span className="hidden sm:inline">{item.label}</span>
             </Button>
           ))}
         </nav>
@@ -199,7 +200,7 @@ function CustomerHeader() {
           <Button
             variant="ghost"
             size="icon"
-            className="relative hover:bg-rose-50"
+            className="relative hover:bg-rose-50 min-w-[44px] min-h-[44px]"
             onClick={() => setView('customer_cart')}
           >
             <ShoppingCart className="h-5 w-5 text-gray-700" />
@@ -218,8 +219,8 @@ function CustomerHeader() {
           {/* User Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8 border-2 border-rose-200">
+              <Button variant="ghost" className="relative h-9 w-9 sm:h-8 sm:w-8 rounded-full">
+                <Avatar className="h-9 w-9 sm:h-8 sm:w-8 border-2 border-rose-200">
                   <AvatarFallback className="bg-gradient-to-br from-rose-400 to-pink-500 text-xs font-semibold text-white">
                     {currentUser?.avatar || 'U'}
                   </AvatarFallback>
@@ -259,24 +260,7 @@ function CustomerHeader() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Mobile Nav */}
-          <nav className="flex md:hidden items-center gap-0.5">
-            {navItems.map((item) => (
-              <Button
-                key={item.view}
-                variant="ghost"
-                size="icon"
-                className={`h-8 w-8 ${
-                  activeNav === item.view
-                    ? 'bg-rose-100 text-rose-600'
-                    : 'text-gray-500'
-                }`}
-                onClick={() => setView(item.view)}
-              >
-                <item.icon className="h-4 w-4" />
-              </Button>
-            ))}
-          </nav>
+
         </div>
       </div>
     </header>
@@ -323,7 +307,7 @@ function CustomerShopView() {
         className="relative overflow-hidden bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700"
       >
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvZz48L3N2Zz4=')] opacity-40" />
-        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20">
+        <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -333,7 +317,7 @@ function CustomerShopView() {
             <Badge className="mb-4 border-rose-300/30 bg-white/10 text-rose-100 hover:bg-white/20">
               <Sparkles className="mr-1 h-3 w-3" /> New Arrivals
             </Badge>
-            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
               Discover Your{' '}
               <span className="bg-gradient-to-r from-amber-200 to-yellow-300 bg-clip-text text-transparent">
                 Glow
@@ -375,14 +359,14 @@ function CustomerShopView() {
         {/* Category Filter Bar */}
         <div className="mb-4">
           <ScrollArea className="w-full whitespace-nowrap">
-            <div className="flex gap-2 pb-2">
+            <div className="overflow-x-auto flex gap-2 pb-2 -mb-2">
               <Button
                 variant={selectedCategory === null ? 'default' : 'outline'}
                 size="sm"
                 className={
                   selectedCategory === null
-                    ? 'bg-rose-600 hover:bg-rose-700 text-white shrink-0'
-                    : 'shrink-0 border-rose-200 hover:bg-rose-50 hover:text-rose-600'
+                    ? 'bg-rose-600 hover:bg-rose-700 text-white shrink-0 px-3 py-1.5 text-xs sm:text-sm whitespace-nowrap'
+                    : 'shrink-0 border-rose-200 hover:bg-rose-50 hover:text-rose-600 px-3 py-1.5 text-xs sm:text-sm whitespace-nowrap'
                 }
                 onClick={() => setSelectedCategory(null)}
               >
@@ -395,8 +379,8 @@ function CustomerShopView() {
                   size="sm"
                   className={
                     selectedCategory === cat.name
-                      ? 'bg-rose-600 hover:bg-rose-700 text-white shrink-0'
-                      : 'shrink-0 border-rose-200 hover:bg-rose-50 hover:text-rose-600'
+                      ? 'bg-rose-600 hover:bg-rose-700 text-white shrink-0 px-3 py-1.5 text-xs sm:text-sm whitespace-nowrap'
+                      : 'shrink-0 border-rose-200 hover:bg-rose-50 hover:text-rose-600 px-3 py-1.5 text-xs sm:text-sm whitespace-nowrap'
                   }
                   onClick={() =>
                     setSelectedCategory(selectedCategory === cat.name ? null : cat.name)
@@ -463,15 +447,15 @@ function CustomerShopView() {
           variants={staggerContainer}
           initial="initial"
           animate="animate"
-          className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4"
         >
           <AnimatePresence mode="popLayout">
             {filteredProducts.map((product) => (
               <motion.div key={product.id} variants={staggerItem} layout>
                 <Card className="group relative overflow-hidden border-rose-100 bg-white transition-all duration-300 hover:shadow-lg hover:shadow-rose-100/50 hover:-translate-y-1 hover:border-rose-200">
                   {/* Product Image/Emoji */}
-                  <div className="relative flex items-center justify-center bg-gradient-to-br from-rose-50 to-pink-50 p-6 sm:p-8">
-                    <span className="text-4xl sm:text-5xl transition-transform duration-300 group-hover:scale-110">
+                  <div className="relative flex items-center justify-center bg-gradient-to-br from-rose-50 to-pink-50 p-3 sm:p-6">
+                    <span className="h-14 w-14 sm:h-20 sm:w-20 flex items-center justify-center text-2xl sm:text-3xl transition-transform duration-300 group-hover:scale-110">
                       {product.image}
                     </span>
                     {product.featured && (
@@ -499,12 +483,12 @@ function CustomerShopView() {
                         {product.brand}
                       </p>
                     </div>
-                    <h3 className="mb-1.5 line-clamp-2 text-sm font-semibold leading-tight text-gray-900 group-hover:text-rose-700 transition-colors">
+                    <h3 className="mb-1.5 line-clamp-1 text-xs sm:text-sm font-semibold leading-tight text-gray-900 group-hover:text-rose-700 transition-colors">
                       {product.name}
                     </h3>
                     {renderStars(product.rating)}
                     <div className="mt-2 flex items-baseline gap-1.5">
-                      <span className="text-base font-bold text-gray-900">
+                      <span className="text-sm sm:text-base font-bold text-gray-900">
                         {formatPrice(product.price)}
                       </span>
                       {product.originalPrice && (
@@ -517,7 +501,7 @@ function CustomerShopView() {
 
                   <CardFooter className="p-3 pt-0 sm:p-4 sm:pt-0">
                     <Button
-                      className="w-full transition-all duration-200"
+                      className="w-full transition-all duration-200 text-[11px] sm:text-xs h-8 sm:h-9"
                       size="sm"
                       disabled={!product.inStock}
                       onClick={() => handleAddToCart(product)}
@@ -641,8 +625,8 @@ function CustomerCartView() {
               >
                 <Card className="border-rose-100 bg-white">
                   <CardContent className="p-4">
-                    <div className="flex gap-4">
-                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 text-3xl sm:h-20 sm:w-20">
+                    <div className="flex gap-3 sm:gap-4">
+                      <div className="flex h-14 w-14 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 text-2xl sm:text-3xl">
                         {item.product.image}
                       </div>
                       <div className="flex flex-1 flex-col justify-between">
@@ -654,7 +638,7 @@ function CustomerCartView() {
                             {item.product.name}
                           </h3>
                           <div className="mt-1 flex items-baseline gap-1.5">
-                            <span className="text-base font-bold text-gray-900">
+                            <span className="text-sm sm:text-base font-bold text-gray-900">
                               {formatPrice(item.product.price)}
                             </span>
                             {item.product.originalPrice && (
@@ -669,7 +653,7 @@ function CustomerCartView() {
                             <Button
                               variant="outline"
                               size="icon"
-                              className="h-7 w-7 border-rose-200 hover:bg-rose-50"
+                              className="min-w-[36px] min-h-[36px] border-rose-200 hover:bg-rose-50"
                               onClick={() => updateCartQuantity(item.product.id, item.quantity - 1)}
                             >
                               <Minus className="h-3 w-3" />
@@ -678,20 +662,20 @@ function CustomerCartView() {
                             <Button
                               variant="outline"
                               size="icon"
-                              className="h-7 w-7 border-rose-200 hover:bg-rose-50"
+                              className="min-w-[36px] min-h-[36px] border-rose-200 hover:bg-rose-50"
                               onClick={() => updateCartQuantity(item.product.id, item.quantity + 1)}
                             >
                               <Plus className="h-3 w-3" />
                             </Button>
                           </div>
                           <div className="flex items-center gap-3">
-                            <span className="text-sm font-bold text-gray-900">
+                            <span className="text-sm sm:text-base font-bold text-gray-900">
                               {formatPrice(item.product.price * item.quantity)}
                             </span>
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-7 w-7 text-red-500 hover:bg-red-50 hover:text-red-600"
+                              className="min-w-[36px] min-h-[36px] text-red-500 hover:bg-red-50 hover:text-red-600"
                               onClick={() => removeFromCart(item.product.id)}
                             >
                               <Trash2 className="h-3.5 w-3.5" />
@@ -711,14 +695,14 @@ function CustomerCartView() {
         <div className="lg:col-span-1">
           <Card className="sticky top-20 border-rose-100 bg-white">
             <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold">Order Summary</CardTitle>
+              <CardTitle className="text-sm sm:text-base font-semibold">Order Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm sm:text-base">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-medium">{formatPrice(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm sm:text-base">
                 <span className="text-muted-foreground">Shipping</span>
                 <span className={`font-medium ${shipping === 0 ? 'text-emerald-600' : ''}`}>
                   {shipping === 0 ? 'FREE' : formatPrice(shipping)}
@@ -824,7 +808,7 @@ function CustomerCheckoutView() {
         <h1 className="mb-6 text-2xl font-bold text-gray-900">Checkout</h1>
       </motion.div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Checkout Form */}
         <div className="space-y-6 lg:col-span-2">
           {/* Shipping Address */}
@@ -888,7 +872,7 @@ function CustomerCheckoutView() {
                 <RadioGroup
                   value={paymentMethod}
                   onValueChange={setPaymentMethod}
-                  className="grid gap-2 sm:grid-cols-2"
+                  className="grid gap-2 grid-cols-1 sm:grid-cols-2"
                 >
                   {paymentOptions.map((opt) => (
                     <label
@@ -967,17 +951,17 @@ function CustomerCheckoutView() {
                 </div>
               </ScrollArea>
               <Separator />
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm sm:text-base">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-medium">{formatPrice(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm sm:text-base">
                 <span className="text-muted-foreground">Shipping</span>
                 <span className={`font-medium ${shipping === 0 ? 'text-emerald-600' : ''}`}>
                   {shipping === 0 ? 'FREE' : formatPrice(shipping)}
                 </span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm sm:text-base">
                 <span className="text-muted-foreground">Payment</span>
                 <span className="font-medium">{paymentMethod}</span>
               </div>
@@ -1078,24 +1062,24 @@ function CustomerOrdersView() {
                   setView('customer_order_detail');
                 }}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-50">
-                        <Package className="h-5 w-5 text-rose-500" />
+                <CardContent className="p-3 sm:p-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+                      <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-rose-50">
+                        <Package className="h-4 w-4 sm:h-5 sm:w-5 text-rose-500" />
                       </div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-900">{order.id}</p>
-                        <p className="text-xs text-muted-foreground">
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm font-semibold text-gray-900 truncate">{order.id}</p>
+                        <p className="text-[11px] sm:text-xs text-muted-foreground">
                           {formatDate(order.createdAt)} &middot; {order.items.length}{' '}
                           {order.items.length === 1 ? 'item' : 'items'}
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                       <div className="text-right">
-                        <p className="text-sm font-bold text-gray-900">{formatPrice(order.total)}</p>
-                        <Badge className={`text-[10px] ${getStatusColor(order.status)}`} variant="outline">
+                        <p className="text-xs sm:text-sm font-bold text-gray-900">{formatPrice(order.total)}</p>
+                        <Badge className={`text-[9px] sm:text-[10px] ${getStatusColor(order.status)}`} variant="outline">
                           {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                         </Badge>
                       </div>
@@ -1161,12 +1145,12 @@ function CustomerOrderDetailView() {
           <ArrowLeft className="mr-1 h-4 w-4" /> Back to Orders
         </Button>
 
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Order {order.id}</h1>
-            <p className="text-sm text-muted-foreground">Placed on {formatDate(order.createdAt)}</p>
+        <div className="mb-6 flex items-start sm:items-center justify-between gap-2">
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">Order {order.id}</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">Placed on {formatDate(order.createdAt)}</p>
           </div>
-          <Badge className={`text-sm ${getStatusColor(order.status)}`} variant="outline">
+          <Badge className={`text-xs sm:text-sm shrink-0 ${getStatusColor(order.status)}`} variant="outline">
             {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
           </Badge>
         </div>
@@ -1176,7 +1160,7 @@ function CustomerOrderDetailView() {
       {order.status !== 'cancelled' && (
         <motion.div {...fadeInUp} transition={{ delay: 0.1 }}>
           <Card className="mb-6 border-rose-100">
-            <CardContent className="p-4 sm:p-6">
+            <CardContent className="p-3 sm:p-6">
               <div className="flex items-center justify-between">
                 {statusSteps.map((step, i) => {
                   const isCompleted = i <= currentStatusIdx;
@@ -1192,14 +1176,14 @@ function CustomerOrderDetailView() {
                               backgroundColor: isCompleted ? '#e11d48' : '#f3f4f6',
                             }}
                             transition={{ duration: 0.3 }}
-                            className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                            className={`flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full ${
                               isCompleted ? 'text-white' : 'text-gray-400'
                             }`}
                           >
-                            <step.icon className="h-4 w-4" />
+                            <step.icon className="h-3 w-3 sm:h-4 sm:w-4" />
                           </motion.div>
                           <span
-                            className={`mt-1 text-[10px] sm:text-xs font-medium ${
+                            className={`mt-1 text-[8px] sm:text-xs font-medium ${
                               isCompleted ? 'text-rose-600' : 'text-gray-400'
                             }`}
                           >
@@ -1343,7 +1327,7 @@ function CustomerTrackingView() {
         >
           <ArrowLeft className="mr-1 h-4 w-4" /> Back to Order
         </Button>
-        <h1 className="mb-2 text-2xl font-bold text-gray-900">Track Shipment</h1>
+        <h1 className="mb-2 text-xl sm:text-2xl font-bold text-gray-900">Track Shipment</h1>
         <p className="mb-6 text-sm text-muted-foreground">
           Order {selectedOrderId} &middot; Shipment {shipment.id}
         </p>
@@ -1353,14 +1337,14 @@ function CustomerTrackingView() {
       <motion.div {...fadeInUp} transition={{ delay: 0.1 }}>
         <Card className="mb-6 border-rose-100 bg-gradient-to-r from-rose-50 to-pink-50">
           <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-rose-100">
-                <Truck className="h-7 w-7 text-rose-600" />
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex h-10 w-10 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-full bg-rose-100">
+                <Truck className="h-5 w-5 sm:h-7 sm:w-7 text-rose-600" />
               </div>
-              <div>
-                <p className="text-sm font-medium text-rose-600">Current Location</p>
-                <p className="text-lg font-bold text-gray-900">{shipment.currentLocation}</p>
-                <p className="text-xs text-muted-foreground">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-rose-600">Current Location</p>
+                <p className="text-base sm:text-lg font-bold text-gray-900">{shipment.currentLocation}</p>
+                <p className="text-[11px] sm:text-xs text-muted-foreground">
                   Estimated delivery: {shipment.estimatedDelivery}
                 </p>
               </div>
@@ -1397,16 +1381,16 @@ function CustomerTrackingView() {
                       animate={{
                         scale: step.completed ? 1 : 0.85,
                       }}
-                      className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                      className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full ${
                         step.completed
                           ? 'bg-rose-600 text-white'
                           : 'bg-gray-100 text-gray-400'
                       }`}
                     >
                       {step.completed ? (
-                        <CheckCircle2 className="h-4 w-4" />
+                        <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       ) : (
-                        <Circle className="h-4 w-4" />
+                        <Circle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       )}
                     </motion.div>
                     {i < shipment.timeline.length - 1 && (
@@ -1562,7 +1546,7 @@ Business Hours: Monday to Saturday, 9:00 AM - 6:00 PM IST`,
           <ArrowLeft className="mr-1 h-4 w-4" /> Back to Shop
         </Button>
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Terms & Conditions</h1>
+          <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Terms & Conditions</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Last updated: January 6, 2025
           </p>
@@ -1579,10 +1563,10 @@ Business Hours: Monday to Saturday, 9:00 AM - 6:00 PM IST`,
           >
             <Card className="border-rose-100">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-semibold text-rose-700">{section.title}</CardTitle>
+                <CardTitle className="text-lg sm:text-xl font-semibold text-rose-700">{section.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm leading-relaxed text-gray-700 whitespace-pre-line">{section.content}</p>
+                <p className="text-sm sm:text-base leading-relaxed text-gray-700 whitespace-pre-line">{section.content}</p>
               </CardContent>
             </Card>
           </motion.div>
@@ -1745,7 +1729,7 @@ You also have the right to lodge a complaint with the relevant data protection a
           <ArrowLeft className="mr-1 h-4 w-4" /> Back to Shop
         </Button>
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Privacy Policy</h1>
+          <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Privacy Policy</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Last updated: January 6, 2025
           </p>
@@ -1762,10 +1746,10 @@ You also have the right to lodge a complaint with the relevant data protection a
           >
             <Card className="border-rose-100">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-semibold text-rose-700">{section.title}</CardTitle>
+                <CardTitle className="text-lg sm:text-xl font-semibold text-rose-700">{section.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm leading-relaxed text-gray-700 whitespace-pre-line">{section.content}</p>
+                <p className="text-sm sm:text-base leading-relaxed text-gray-700 whitespace-pre-line">{section.content}</p>
               </CardContent>
             </Card>
           </motion.div>
