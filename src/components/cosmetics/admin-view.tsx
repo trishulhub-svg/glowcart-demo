@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Image from 'next/image';
 import { useAppStore } from '@/lib/store';
 import { type Order, ADMIN_STATS, DEMO_USERS, PRODUCTS } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
@@ -282,18 +281,13 @@ export default function AdminView() {
           }`}
         >
           {/* Logo */}
-          <div className="flex h-18 items-center gap-3.5 border-b border-rose-100 px-5 py-3">
-            <div className="relative h-11 w-11 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={44} height={44} className="object-contain" />
-            </div>
+          <div className="flex items-center justify-between border-b border-rose-100 px-5 py-4">
             <div>
               <h1 className="text-lg font-bold tracking-tight text-gray-900">
                 Glow<span className="text-rose-500">Cart</span>
               </h1>
-              <div className="mt-0.5">
-                <span className="text-[11px] text-gray-500 font-medium">by Trishul<span className="text-sky-600">Hub</span></span>
-              </div>
-              <p className="text-[10px] font-medium uppercase tracking-widest text-gray-400">
+              <span className="text-[11px] text-gray-400 font-medium">by Trishul<span className="text-sky-600">Hub</span></span>
+              <p className="text-[10px] font-medium uppercase tracking-widest text-gray-400 mt-0.5">
                 Admin Panel
               </p>
             </div>
@@ -1575,16 +1569,11 @@ export default function AdminView() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="flex items-center gap-2">
-            <div className="relative h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={36} height={36} className="object-contain" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-bold text-gray-900 leading-tight">
-                Glow<span className="text-rose-500">Cart</span>
-              </span>
-              <span className="text-[8px] sm:text-[10px] text-gray-500 font-medium leading-tight">by Trishul<span className="text-sky-600">Hub</span></span>
-            </div>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold text-gray-900 leading-tight">
+              Glow<span className="text-rose-500">Cart</span>
+            </span>
+            <span className="text-[8px] sm:text-[10px] text-gray-400 font-medium leading-tight">by Trishul<span className="text-sky-600">Hub</span></span>
           </div>
           <div className="ml-auto">
             <Avatar className="h-8 w-8 border border-rose-200">

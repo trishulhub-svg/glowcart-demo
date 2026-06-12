@@ -6,7 +6,6 @@ import { useAppStore } from '@/lib/store';
 import { type UserRole } from '@/lib/mock-data';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
 import { TrishulHubFooter } from '@/components/cosmetics/trishulhub-footer';
 
 // ---- Role Configuration ----
@@ -182,16 +181,16 @@ export default function LoginPage() {
 
         {/* Brand Content */}
         <div className="relative z-10 flex flex-col items-center text-center px-12">
-          {/* Logo */}
+          {/* TrishulHub Name */}
           <motion.div
-            initial={{ opacity: 0, y: -30, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.3, type: 'spring', stiffness: 200 }}
-            className="mb-6"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mb-4"
           >
-            <div className="relative w-44 h-44 xl:w-52 xl:h-52 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={208} height={208} className="object-contain drop-shadow-2xl" />
-            </div>
+            <span className="text-sm font-medium tracking-widest text-white/50 uppercase">
+              Trishul<span className="text-sky-300">Hub</span>
+            </span>
           </motion.div>
 
           {/* Brand Name */}
@@ -235,26 +234,15 @@ export default function LoginPage() {
 
           {/* TrishulHub Badge */}
           <motion.div
-            className="mt-10 flex items-center gap-4"
+            className="mt-10 flex flex-col items-center gap-1"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
           >
-            <div className="relative w-14 h-14 flex-shrink-0">
-              <Image
-                src="/trishulhub-logo.png"
-                alt="TrishulHub"
-                width={56}
-                height={56}
-                className="object-contain drop-shadow-md"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-base font-semibold text-white/90">
-                A Trishul<span className="text-sky-300">Hub</span> Product
-              </span>
-              <span className="text-xs text-white/60">Technology & Innovation</span>
-            </div>
+            <span className="text-sm font-semibold text-white/80">
+              A Trishul<span className="text-sky-300">Hub</span> Product
+            </span>
+            <span className="text-xs text-white/50">Technology & Innovation</span>
           </motion.div>
         </div>
 
@@ -271,16 +259,14 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="relative w-16 h-16 sm:w-18 sm:h-18 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={64} height={64} className="object-contain" />
-            </div>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
-                Glow<span className="text-rose-500">Cart</span>
-              </h1>
-              <p className="text-sm text-gray-500 -mt-0.5">Premium Beauty, Delivered</p>
-            </div>
+          <div className="flex flex-col items-center gap-1 mb-4">
+            <span className="text-xs font-medium tracking-widest text-gray-400 uppercase">
+              Trishul<span className="text-sky-600">Hub</span>
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
+              Glow<span className="text-rose-500">Cart</span>
+            </h1>
+            <p className="text-sm text-gray-500">Premium Beauty, Delivered</p>
           </div>
         </motion.div>
 
