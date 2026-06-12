@@ -271,15 +271,15 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center gap-3.5 mb-4">
-            <div className="relative w-14 h-14 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={56} height={56} className="object-contain" />
+          <div className="flex items-center gap-4 mb-4">
+            <div className="relative w-16 h-16 sm:w-18 sm:h-18 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={64} height={64} className="object-contain" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
                 Glow<span className="text-rose-500">Cart</span>
               </h1>
-              <p className="text-xs text-gray-500 -mt-0.5">Premium Beauty, Delivered</p>
+              <p className="text-sm text-gray-500 -mt-0.5">Premium Beauty, Delivered</p>
             </div>
           </div>
         </motion.div>

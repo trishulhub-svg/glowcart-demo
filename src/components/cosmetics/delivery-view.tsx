@@ -175,15 +175,17 @@ export default function DeliveryView() {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-rose-50/60 via-white to-amber-50/30">
       {/* ─── Top Header ──────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-rose-100 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto max-w-lg flex items-center justify-between px-4 h-14">
-          <div className="flex items-center gap-3">
-            <div className="relative h-10 w-10 flex-shrink-0">
+        <div className="mx-auto max-w-lg flex items-center justify-between px-3 sm:px-4 h-14 sm:h-16">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="relative h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0">
               <Image src="/trishulhub-logo.png" alt="TrishulHub" width={40} height={40} className="object-contain" />
             </div>
-            <span className="text-base font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
-              Delivery Hub
-            </span>
-            <span className="text-[11px] text-gray-500 font-medium ml-0.5 self-end mb-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
+            <div className="flex flex-col">
+              <span className="text-sm sm:text-base font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent leading-tight">
+                Delivery Hub
+              </span>
+              <span className="text-[8px] sm:text-[11px] text-gray-500 font-medium leading-tight">by Trishul<span className="text-sky-600">Hub</span></span>
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
@@ -342,14 +344,16 @@ function DeliveryDashboard({
     <div className="space-y-5">
       {/* Greeting */}
       <div>
-        <div className="flex items-center gap-2.5">
-          <div className="relative h-8 w-8 flex-shrink-0">
-            <Image src="/trishulhub-logo.png" alt="TrishulHub" width={32} height={32} className="object-contain" />
+        <div className="flex items-center gap-3">
+          <div className="relative h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0">
+            <Image src="/trishulhub-logo.png" alt="TrishulHub" width={40} height={40} className="object-contain" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight">
-            Delivery <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">Hub</span>
-          </h1>
-          <span className="text-[11px] text-gray-500 font-medium ml-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
+          <div className="flex flex-col">
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight leading-tight">
+              Delivery <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">Hub</span>
+            </h1>
+            <span className="text-[9px] sm:text-[11px] text-gray-500 font-medium leading-tight">by Trishul<span className="text-sky-600">Hub</span></span>
+          </div>
         </div>
         <p className="text-muted-foreground text-sm mt-0.5">Manage your deliveries on the go.</p>
       </div>

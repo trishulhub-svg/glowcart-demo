@@ -1568,21 +1568,23 @@ export default function AdminView() {
       {/* Main Content */}
       <main className="flex-1 overflow-hidden flex flex-col">
         {/* Top Bar (Mobile) */}
-        <div className="flex h-14 items-center gap-3 border-b border-gray-100 bg-white px-3 sm:px-4 lg:hidden">
+        <div className="flex h-14 items-center gap-2 border-b border-gray-100 bg-white px-2 sm:px-4 lg:hidden">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="rounded-md p-2 text-gray-500 hover:bg-gray-100 min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100 min-h-[40px] min-w-[40px] flex items-center justify-center"
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="flex items-center gap-3">
-            <div className="relative h-9 w-9 flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="relative h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0">
               <Image src="/trishulhub-logo.png" alt="TrishulHub" width={36} height={36} className="object-contain" />
             </div>
-            <span className="text-sm font-bold text-gray-900">
-              Glow<span className="text-rose-500">Cart</span>
-            </span>
-            <span className="text-[10px] text-gray-500 font-medium ml-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
+            <div className="flex flex-col">
+              <span className="text-sm font-bold text-gray-900 leading-tight">
+                Glow<span className="text-rose-500">Cart</span>
+              </span>
+              <span className="text-[8px] sm:text-[10px] text-gray-500 font-medium leading-tight">by Trishul<span className="text-sky-600">Hub</span></span>
+            </div>
           </div>
           <div className="ml-auto">
             <Avatar className="h-8 w-8 border border-rose-200">

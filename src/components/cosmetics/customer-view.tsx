@@ -159,19 +159,21 @@ function CustomerHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-rose-100 bg-white/80 backdrop-blur-lg supports-[backdrop-filter]:bg-white/60">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between px-3 sm:px-6">
         {/* Logo */}
         <button
           onClick={() => setView('customer_shop')}
-          className="flex items-center gap-2 transition-opacity hover:opacity-80"
+          className="flex items-center gap-2 sm:gap-2.5 transition-opacity hover:opacity-80"
         >
-          <div className="relative h-10 w-10 flex-shrink-0">
+          <div className="relative h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0">
             <Image src="/trishulhub-logo.png" alt="TrishulHub" width={40} height={40} className="object-contain" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
-            GlowCart
-          </span>
-          <span className="text-[11px] text-gray-500 font-medium ml-1 self-end mb-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
+          <div className="flex flex-col">
+            <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent leading-tight">
+              GlowCart
+            </span>
+            <span className="text-[9px] sm:text-[11px] text-gray-500 font-medium leading-tight">by Trishul<span className="text-sky-600">Hub</span></span>
+          </div>
         </button>
 
         {/* Navigation Tabs */}

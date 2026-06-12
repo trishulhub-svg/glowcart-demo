@@ -183,16 +183,18 @@ export default function EmployeeView() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* ─── Top Navigation Bar ─────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-rose-100 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl flex items-center justify-between px-4 sm:px-6 h-16">
+        <div className="mx-auto max-w-7xl flex items-center justify-between px-3 sm:px-6 h-14 sm:h-16">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="relative h-10 w-10 flex-shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="relative h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0">
               <Image src="/trishulhub-logo.png" alt="TrishulHub" width={40} height={40} className="object-contain" />
             </div>
-            <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
-              GlowCart
-            </span>
-            <span className="text-[11px] text-gray-500 font-medium ml-0.5 self-end mb-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
+            <div className="flex flex-col">
+              <span className="text-base sm:text-lg font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent leading-tight">
+                GlowCart
+              </span>
+              <span className="text-[9px] sm:text-[11px] text-gray-500 font-medium leading-tight">by Trishul<span className="text-sky-600">Hub</span></span>
+            </div>
           </div>
 
           {/* Navigation Tabs */}
