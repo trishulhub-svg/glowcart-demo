@@ -1,0 +1,893 @@
+     1→     1→'use client';
+     2→     2→
+     3→     3→import { useMemo, useState } from 'react';
+     4→     4→import { motion, AnimatePresence } from 'framer-motion';
+     5→     5→import {
+     6→     6→  Home,
+     7→     7→  Truck,
+     8→     8→  History,
+     9→     9→  User,
+    10→    10→  Package,
+    11→    11→  MapPin,
+    12→    12→  Clock,
+    13→    13→  Star,
+    14→    14→  Phone,
+    15→    15→  Mail,
+    16→    16→  Navigation,
+    17→    17→  CheckCircle2,
+    18→    18→  Bike,
+    19→    19→  Zap,
+    20→    20→  TrendingUp,
+    21→    21→  Calendar,
+    22→    22→} from 'lucide-react';
+    23→    23→import { useAppStore } from '@/lib/store';
+    24→    24→import { type Order, type Shipment } from '@/lib/mock-data';
+    25→    25→import { Button } from '@/components/ui/button';
+    26→    26→import {
+    27→    27→  Card,
+    28→    28→  CardContent,
+    29→    29→  CardDescription,
+    30→    30→  CardHeader,
+    31→    31→  CardTitle,
+    32→    32→} from '@/components/ui/card';
+    33→    33→import { Badge } from '@/components/ui/badge';
+    34→    34→import { Separator } from '@/components/ui/separator';
+    35→    35→import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+    36→    36→import { Progress } from '@/components/ui/progress';
+    37→    37→import { useToast } from '@/hooks/use-toast';
+    38→    38→import { TrishulHubFooter } from '@/components/cosmetics/trishulhub-footer';
+    39→    39→
+    40→    40→// ─── Shipment Status Badge ─────────────────────────────────────────────────
+    41→    41→function ShipmentStatusBadge({ status }: { status: Shipment['status'] }) {
+    42→    42→  const config: Record<Shipment['status'], { label: string; className: string }> = {
+    43→    43→    picked_up: { label: 'Picked Up', className: 'bg-violet-100 text-violet-800 border-violet-200 hover:bg-violet-100' },
+    44→    44→    in_transit: { label: 'In Transit', className: 'bg-sky-100 text-sky-800 border-sky-200 hover:bg-sky-100' },
+    45→    45→    out_for_delivery: { label: 'Out for Delivery', className: 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-100' },
+    46→    46→    delivered: { label: 'Delivered', className: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100' },
+    47→    47→  };
+    48→    48→  const c = config[status];
+    49→    49→  return <Badge variant="outline" className={c.className}>{c.label}</Badge>;
+    50→    50→}
+    51→    51→
+    52→    52→// ─── Format helpers ────────────────────────────────────────────────────────
+    53→    53→function formatDate(iso: string) {
+    54→    54→  return new Date(iso).toLocaleDateString('en-IN', {
+    55→    55→    day: '2-digit',
+    56→    56→    month: 'short',
+    57→    57→    year: 'numeric',
+    58→    58→  });
+    59→    59→}
+    60→    60→
+    61→    61→function formatDateShort(iso: string) {
+    62→    62→  return new Date(iso).toLocaleDateString('en-IN', {
+    63→    63→    day: '2-digit',
+    64→    64→    month: 'short',
+    65→    65→  });
+    66→    66→}
+    67→    67→
+    68→    68→function formatCurrency(amount: number) {
+    69→    69→  return new Intl.NumberFormat('en-IN', {
+    70→    70→    style: 'currency',
+    71→    71→    currency: 'INR',
+    72→    72→    maximumFractionDigits: 0,
+    73→    73→  }).format(amount);
+    74→    74→}
+    75→    75→
+    76→    76→// ─── Animation Variants ────────────────────────────────────────────────────
+    77→    77→const containerVariants = {
+    78→    78→  hidden: { opacity: 0 },
+    79→    79→  show: { opacity: 1, transition: { staggerChildren: 0.07 } },
+    80→    80→} as const;
+    81→    81→const itemVariants = {
+    82→    82→  hidden: { opacity: 0, y: 14 },
+    83→    83→  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 24 } },
+    84→    84→};
+    85→    85→
+    86→    86→// ─── Status Flow for delivery ──────────────────────────────────────────────
+    87→    87→const DELIVERY_STATUS_FLOW: { key: Shipment['status']; label: string; icon: typeof Package; color: string }[] = [
+    88→    88→  { key: 'picked_up', label: 'Picked Up', icon: Package, color: 'bg-violet-500 hover:bg-violet-600' },
+    89→    89→  { key: 'in_transit', label: 'In Transit', icon: Navigation, color: 'bg-sky-500 hover:bg-sky-600' },
+    90→    90→  { key: 'out_for_delivery', label: 'Out for Delivery', icon: Truck, color: 'bg-amber-500 hover:bg-amber-600' },
+    91→    91→  { key: 'delivered', label: 'Delivered', icon: CheckCircle2, color: 'bg-emerald-500 hover:bg-emerald-600' },
+    92→    92→];
+    93→    93→
+    94→    94→function getStatusIndex(status: Shipment['status']): number {
+    95→    95→  return DELIVERY_STATUS_FLOW.findIndex((s) => s.key === status);
+    96→    96→}
+    97→    97→
+    98→    98→// ═══════════════════════════════════════════════════════════════════════════════
+    99→    99→// DELIVERY VIEW
+   100→   100→// ═══════════════════════════════════════════════════════════════════════════════
+   101→   101→export default function DeliveryView() {
+   102→   102→  const {
+   103→   103→    currentView,
+   104→   104→    orders,
+   105→   105→    shipments,
+   106→   106→    updateShipmentStatus,
+   107→   107→    setView,
+   108→   108→    logout,
+   109→   109→    currentUser,
+   110→   110→  } = useAppStore();
+   111→   111→  const { toast } = useToast();
+   112→   112→
+   113→   113→  // ─── Derived data ────────────────────────────────────────────────────────
+   114→   114→  const activeShipments = useMemo(
+   115→   115→    () => shipments.filter((s) => s.status !== 'delivered'),
+   116→   116→    [shipments]
+   117→   117→  );
+   118→   118→
+   119→   119→  const completedShipments = useMemo(
+   120→   120→    () => shipments.filter((s) => s.status === 'delivered'),
+   121→   121→    [shipments]
+   122→   122→  );
+   123→   123→
+   124→   124→  const completedOrders = useMemo(
+   125→   125→    () => orders.filter((o) => o.status === 'delivered'),
+   126→   126→    [orders]
+   127→   127→  );
+   128→   128→
+   129→   129→  // ─── Handlers ────────────────────────────────────────────────────────────
+   130→   130→  const handleUpdateStatus = (shipmentId: string, newStatus: Shipment['status'], location: string) => {
+   131→   131→    updateShipmentStatus(shipmentId, newStatus, location);
+   132→   132→    toast({
+   133→   133→      title: 'Status Updated',
+   134→   134→      description: `Shipment updated to ${newStatus.replace(/_/g, ' ')}`,
+   135→   135→    });
+   136→   136→  };
+   137→   137→
+   138→   138→  const handleStartDelivery = () => {
+   139→   139→    const nextPending = activeShipments.find((s) => s.status === 'picked_up');
+   140→   140→    if (nextPending) {
+   141→   141→      setView('delivery_active');
+   142→   142→      toast({
+   143→   143→        title: 'Delivery Started',
+   144→   144→        description: `Now handling ${nextPending.orderId}`,
+   145→   145→      });
+   146→   146→    } else {
+   147→   147→      toast({
+   148→   148→        title: 'No Pending Pickups',
+   149→   149→        description: 'All assigned shipments are in progress.',
+   150→   150→      });
+   151→   151→    }
+   152→   152→  };
+   153→   153→
+   154→   154→  // ─── Active tab derived from view ────────────────────────────────────────
+   155→   155→  const activeTab = currentView === 'delivery_active'
+   156→   156→    ? 'active'
+   157→   157→    : currentView === 'delivery_history'
+   158→   158→    ? 'history'
+   159→   159→    : currentView === 'delivery_profile'
+   160→   160→    ? 'profile'
+   161→   161→    : 'home';
+   162→   162→
+   163→   163→  const handleTabChange = (tab: string) => {
+   164→   164→    if (tab === 'home') setView('delivery_dashboard');
+   165→   165→    else if (tab === 'active') setView('delivery_active');
+   166→   166→    else if (tab === 'history') setView('delivery_history');
+   167→   167→    else if (tab === 'profile') setView('delivery_profile');
+   168→   168→  };
+   169→   169→
+   170→   170→  // ═════════════════════════════════════════════════════════════════════════
+   171→   171→  // RENDER
+   172→   172→  // ═════════════════════════════════════════════════════════════════════════
+   173→   173→  return (
+   174→   174→    <div className="min-h-screen flex flex-col bg-gradient-to-br from-rose-50/60 via-white to-amber-50/30">
+   175→   175→      {/* ─── Top Header ──────────────────────────────────────────────────── */}
+   176→   176→      <header className="sticky top-0 z-50 border-b border-rose-100 bg-white/80 backdrop-blur-md">
+   177→   177→        <div className="mx-auto max-w-lg flex items-center justify-between px-3 sm:px-4 h-14 sm:h-16">
+   178→   178→          <div className="flex flex-col">
+   179→   179→            <span className="text-sm sm:text-base font-bold tracking-tight bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent leading-tight">
+   180→   180→              Delivery Hub
+   181→   181→            </span>
+   182→   182→            <span className="text-[8px] sm:text-[11px] text-gray-400 font-medium leading-tight">by Trishul<span className="text-sky-600">Hub</span></span>
+   183→   183→          </div>
+   184→   184→
+   185→   185→          <div className="flex items-center gap-2">
+   186→   186→            <div className="text-right leading-tight">
+   187→   187→              <p className="text-sm font-medium">{currentUser?.name || 'Driver'}</p>
+   188→   188→              <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-rose-50 text-rose-700 border-rose-200">
+   189→   189→                Delivery
+   190→   190→              </Badge>
+   191→   191→            </div>
+   192→   192→            <Avatar className="h-8 w-8 border-2 border-rose-200">
+   193→   193→              <AvatarFallback className="bg-rose-100 text-rose-700 text-xs font-semibold">
+   194→   194→                {currentUser?.avatar || 'AP'}
+   195→   195→              </AvatarFallback>
+   196→   196→            </Avatar>
+   197→   197→          </div>
+   198→   198→        </div>
+   199→   199→      </header>
+   200→   200→
+   201→   201→      {/* ─── Main Content ─────────────────────────────────────────────────── */}
+   202→   202→      <main className="flex-1 mx-auto w-full max-w-lg px-4 py-5 pb-20">
+   203→   203→        <AnimatePresence mode="wait">
+   204→   204→          {currentView === 'delivery_dashboard' && (
+   205→   205→            <motion.div
+   206→   206→              key="del-dashboard"
+   207→   207→              initial={{ opacity: 0, y: 12 }}
+   208→   208→              animate={{ opacity: 1, y: 0 }}
+   209→   209→              exit={{ opacity: 0, y: -12 }}
+   210→   210→              transition={{ duration: 0.3 }}
+   211→   211→            >
+   212→   212→              <DeliveryDashboard
+   213→   213→                activeShipments={activeShipments}
+   214→   214→                completedShipments={completedShipments}
+   215→   215→                orders={orders}
+   216→   216→                onStartDelivery={handleStartDelivery}
+   217→   217→                onUpdateStatus={handleUpdateStatus}
+   218→   218→              />
+   219→   219→            </motion.div>
+   220→   220→          )}
+   221→   221→
+   222→   222→          {currentView === 'delivery_active' && (
+   223→   223→            <motion.div
+   224→   224→              key="del-active"
+   225→   225→              initial={{ opacity: 0, y: 12 }}
+   226→   226→              animate={{ opacity: 1, y: 0 }}
+   227→   227→              exit={{ opacity: 0, y: -12 }}
+   228→   228→              transition={{ duration: 0.3 }}
+   229→   229→            >
+   230→   230→              <DeliveryActive
+   231→   231→                activeShipments={activeShipments}
+   232→   232→                orders={orders}
+   233→   233→                onUpdateStatus={handleUpdateStatus}
+   234→   234→              />
+   235→   235→            </motion.div>
+   236→   236→          )}
+   237→   237→
+   238→   238→          {currentView === 'delivery_history' && (
+   239→   239→            <motion.div
+   240→   240→              key="del-history"
+   241→   241→              initial={{ opacity: 0, y: 12 }}
+   242→   242→              animate={{ opacity: 1, y: 0 }}
+   243→   243→              exit={{ opacity: 0, y: -12 }}
+   244→   244→              transition={{ duration: 0.3 }}
+   245→   245→            >
+   246→   246→              <DeliveryHistory
+   247→   247→                completedShipments={completedShipments}
+   248→   248→                completedOrders={completedOrders}
+   249→   249→                orders={orders}
+   250→   250→              />
+   251→   251→            </motion.div>
+   252→   252→          )}
+   253→   253→
+   254→   254→          {currentView === 'delivery_profile' && (
+   255→   255→            <motion.div
+   256→   256→              key="del-profile"
+   257→   257→              initial={{ opacity: 0, y: 12 }}
+   258→   258→              animate={{ opacity: 1, y: 0 }}
+   259→   259→              exit={{ opacity: 0, y: -12 }}
+   260→   260→              transition={{ duration: 0.3 }}
+   261→   261→            >
+   262→   262→              <DeliveryProfile
+   263→   263→                currentUser={currentUser}
+   264→   264→                completedShipments={completedShipments}
+   265→   265→              />
+   266→   266→            </motion.div>
+   267→   267→          )}
+   268→   268→        </AnimatePresence>
+   269→   269→      </main>
+   270→   270→
+   271→   271→      <TrishulHubFooter variant="light" />
+   272→   272→
+   273→   273→      {/* ─── Bottom Tab Navigation ────────────────────────────────────────── */}
+   274→   274→      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-rose-100 bg-white/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+   275→   275→        <div className="mx-auto max-w-lg flex items-center justify-around py-1.5 px-2 min-h-[52px]">
+   276→   276→          {[
+   277→   277→            { key: 'home', label: 'Home', icon: Home, view: 'delivery_dashboard' },
+   278→   278→            { key: 'active', label: 'Active', icon: Truck, view: 'delivery_active' },
+   279→   279→            { key: 'history', label: 'History', icon: History, view: 'delivery_history' },
+   280→   280→            { key: 'profile', label: 'Profile', icon: User, view: 'delivery_profile' },
+   281→   281→          ].map((tab) => {
+   282→   282→            const isActive = activeTab === tab.key;
+   283→   283→            return (
+   284→   284→              <button
+   285→   285→                key={tab.key}
+   286→   286→                onClick={() => handleTabChange(tab.key)}
+   287→   287→                className={`flex flex-col items-center justify-center gap-0.5 py-1.5 px-3 rounded-xl transition-all min-h-[44px] min-w-[44px] ${
+   288→   288→                  isActive
+   289→   289→                    ? 'text-rose-600 bg-rose-50 scale-105'
+   290→   290→                    : 'text-muted-foreground hover:text-rose-400'
+   291→   291→                }`}
+   292→   292→              >
+   293→   293→                <tab.icon className={`h-5 w-5 ${isActive ? 'stroke-[2.5]' : ''}`} />
+   294→   294→                <span className={`text-[10px] font-medium ${isActive ? 'text-rose-600' : ''}`}>
+   295→   295→                  {tab.label}
+   296→   296→                </span>
+   297→   297→                {isActive && (
+   298→   298→                  <motion.div
+   299→   299→                    layoutId="deliveryTabIndicator"
+   300→   300→                    className="h-0.5 w-4 rounded-full bg-rose-500"
+   301→   301→                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+   302→   302→                  />
+   303→   303→                )}
+   304→   304→              </button>
+   305→   305→            );
+   306→   306→          })}
+   307→   307→        </div>
+   308→   308→      </nav>
+   309→   309→    </div>
+   310→   310→  );
+   311→   311→}
+   312→   312→
+   313→   313→// ═══════════════════════════════════════════════════════════════════════════════
+   314→   314→// SUB-VIEWS
+   315→   315→// ═══════════════════════════════════════════════════════════════════════════════
+   316→   316→
+   317→   317→// ─── Delivery Dashboard ────────────────────────────────────────────────────
+   318→   318→function DeliveryDashboard({
+   319→   319→  activeShipments,
+   320→   320→  completedShipments,
+   321→   321→  orders,
+   322→   322→  onStartDelivery,
+   323→   323→  onUpdateStatus,
+   324→   324→}: {
+   325→   325→  activeShipments: Shipment[];
+   326→   326→  completedShipments: Shipment[];
+   327→   327→  orders: Order[];
+   328→   328→  onStartDelivery: () => void;
+   329→   329→  onUpdateStatus: (id: string, status: Shipment['status'], location: string) => void;
+   330→   330→}) {
+   331→   331→  const stats = [
+   332→   332→    { label: 'Active', value: activeShipments.length, icon: Truck, color: 'from-rose-500 to-pink-500', shadow: 'shadow-rose-200' },
+   333→   333→    { label: 'Done Today', value: completedShipments.length, icon: CheckCircle2, color: 'from-emerald-500 to-green-500', shadow: 'shadow-emerald-200' },
+   334→   334→    { label: 'Pickups', value: activeShipments.filter((s) => s.status === 'picked_up').length, icon: Package, color: 'from-violet-500 to-purple-500', shadow: 'shadow-violet-200' },
+   335→   335→  ];
+   336→   336→
+   337→   337→  return (
+   338→   338→    <div className="space-y-5">
+   339→   339→      {/* Greeting */}
+   340→   340→      <div>
+   341→   341→        <div className="flex flex-col">
+   342→   342→          <h1 className="text-lg sm:text-xl font-bold tracking-tight leading-tight">
+   343→   343→            Delivery <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">Hub</span>
+   344→   344→          </h1>
+   345→   345→          <span className="text-[9px] sm:text-[11px] text-gray-400 font-medium leading-tight">by Trishul<span className="text-sky-600">Hub</span></span>
+   346→   346→        </div>
+   347→   347→        <p className="text-muted-foreground text-sm mt-0.5">Manage your deliveries on the go.</p>
+   348→   348→      </div>
+   349→   349→
+   350→   350→      {/* Stats */}
+   351→   351→      <motion.div
+   352→   352→        className="grid grid-cols-3 gap-2 sm:gap-3"
+   353→   353→        variants={containerVariants}
+   354→   354→        initial="hidden"
+   355→   355→        animate="show"
+   356→   356→      >
+   357→   357→        {stats.map((stat) => (
+   358→   358→          <motion.div key={stat.label} variants={itemVariants}>
+   359→   359→            <Card className="border-0 shadow-md text-center overflow-hidden">
+   360→   360→              <CardContent className="p-3">
+   361→   361→                <div className={`mx-auto mb-1.5 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-gradient-to-br ${stat.color} shadow-md ${stat.shadow}`}>
+   362→   362→                  <stat.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
+   363→   363→                </div>
+   364→   364→                <p className="text-lg sm:text-xl font-bold">{stat.value}</p>
+   365→   365→                <p className="text-[11px] text-muted-foreground font-medium">{stat.label}</p>
+   366→   366→              </CardContent>
+   367→   367→              <div className={`h-1 bg-gradient-to-r ${stat.color}`} />
+   368→   368→            </Card>
+   369→   369→          </motion.div>
+   370→   370→        ))}
+   371→   371→      </motion.div>
+   372→   372→
+   373→   373→      {/* Start Delivery CTA */}
+   374→   374→      <motion.button
+   375→   375→        whileHover={{ scale: 1.01 }}
+   376→   376→        whileTap={{ scale: 0.98 }}
+   377→   377→        onClick={onStartDelivery}
+   378→   378→        className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 px-6 py-3.5 text-white font-semibold shadow-lg shadow-rose-200 transition-all"
+   379→   379→      >
+   380→   380→        <Zap className="h-5 w-5" />
+   381→   381→        Start Delivery
+   382→   382→      </motion.button>
+   383→   383→
+   384→   384→      {/* Active Delivery Cards */}
+   385→   385→      <div>
+   386→   386→        <h2 className="text-base font-semibold mb-3 flex items-center gap-2">
+   387→   387→          <Navigation className="h-4 w-4 text-rose-500" />
+   388→   388→          Active Deliveries
+   389→   389→        </h2>
+   390→   390→        <div className="space-y-3">
+   391→   391→          {activeShipments.length === 0 ? (
+   392→   392→            <Card className="border-0 shadow-md">
+   393→   393→              <CardContent className="flex flex-col items-center justify-center py-10">
+   394→   394→                <CheckCircle2 className="h-10 w-10 text-emerald-400 mb-2" />
+   395→   395→                <p className="text-sm text-muted-foreground">No active deliveries</p>
+   396→   396→              </CardContent>
+   397→   397→            </Card>
+   398→   398→          ) : (
+   399→   399→            activeShipments.map((shipment, i) => {
+   400→   400→              const order = orders.find((o) => o.id === shipment.orderId);
+   401→   401→              return (
+   402→   402→                <motion.div
+   403→   403→                  key={shipment.id}
+   404→   404→                  initial={{ opacity: 0, y: 8 }}
+   405→   405→                  animate={{ opacity: 1, y: 0 }}
+   406→   406→                  transition={{ delay: i * 0.05 }}
+   407→   407→                >
+   408→   408→                  <Card className="border-0 shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+   409→   409→                    <CardContent className="p-3 sm:p-4">
+   410→   410→                      <div className="flex items-start justify-between mb-2">
+   411→   411→                        <div>
+   412→   412→                          <p className="font-mono text-sm font-bold text-rose-700">{shipment.orderId}</p>
+   413→   413→                          <p className="text-sm font-medium">{order?.customerName || 'Customer'}</p>
+   414→   414→                        </div>
+   415→   415→                        <ShipmentStatusBadge status={shipment.status} />
+   416→   416→                      </div>
+   417→   417→
+   418→   418→                      <div className="flex items-start gap-2 mb-3 text-sm text-muted-foreground">
+   419→   419→                        <MapPin className="h-4 w-4 shrink-0 mt-0.5 text-rose-400" />
+   420→   420→                        <span>{order?.shippingAddress || 'Address on file'}</span>
+   421→   421→                      </div>
+   422→   422→
+   423→   423→                      <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+   424→   424→                        <div className="flex items-center gap-1">
+   425→   425→                          <Clock className="h-3.5 w-3.5" />
+   426→   426→                          ETA: {shipment.estimatedDelivery}
+   427→   427→                        </div>
+   428→   428→                        <span className="font-medium text-rose-600">{shipment.currentLocation}</span>
+   429→   429→                      </div>
+   430→   430→
+   431→   431→                      {/* Quick status update */}
+   432→   432→                      <div className="flex gap-2">
+   433→   433→                        {DELIVERY_STATUS_FLOW.slice(getStatusIndex(shipment.status) + 1, getStatusIndex(shipment.status) + 2).map((step) => (
+   434→   434→                          <Button
+   435→   435→                            key={step.key}
+   436→   436→                            size="sm"
+   437→   437→                            className={`flex-1 text-xs text-white shadow-sm ${step.color}`}
+   438→   438→                            onClick={() =>
+   439→   439→                              onUpdateStatus(shipment.id, step.key, shipment.currentLocation)
+   440→   440→                            }
+   441→   441→                          >
+   442→   442→                            <step.icon className="h-3.5 w-3.5 mr-1" />
+   443→   443→                            {step.label}
+   444→   444→                          </Button>
+   445→   445→                        ))}
+   446→   446→                      </div>
+   447→   447→                    </CardContent>
+   448→   448→                  </Card>
+   449→   449→                </motion.div>
+   450→   450→              );
+   451→   451→            })
+   452→   452→          )}
+   453→   453→        </div>
+   454→   454→      </div>
+   455→   455→    </div>
+   456→   456→  );
+   457→   457→}
+   458→   458→
+   459→   459→// ─── Delivery Active ───────────────────────────────────────────────────────
+   460→   460→function DeliveryActive({
+   461→   461→  activeShipments,
+   462→   462→  orders,
+   463→   463→  onUpdateStatus,
+   464→   464→}: {
+   465→   465→  activeShipments: Shipment[];
+   466→   466→  orders: Order[];
+   467→   467→  onUpdateStatus: (id: string, status: Shipment['status'], location: string) => void;
+   468→   468→}) {
+   469→   469→  return (
+   470→   470→    <div className="space-y-5">
+   471→   471→      <div>
+   472→   472→        <h1 className="text-xl font-bold tracking-tight">Active Deliveries</h1>
+   473→   473→        <p className="text-muted-foreground text-sm mt-0.5">
+   474→   474→          {activeShipments.length} shipment{activeShipments.length !== 1 ? 's' : ''} in progress
+   475→   475→        </p>
+   476→   476→      </div>
+   477→   477→
+   478→   478→      {activeShipments.length === 0 ? (
+   479→   479→        <Card className="border-0 shadow-md">
+   480→   480→          <CardContent className="flex flex-col items-center justify-center py-16">
+   481→   481→            <CheckCircle2 className="h-12 w-12 text-emerald-400 mb-3" />
+   482→   482→            <p className="text-lg font-medium text-muted-foreground">All deliveries complete!</p>
+   483→   483→            <p className="text-sm text-muted-foreground">No active shipments right now.</p>
+   484→   484→          </CardContent>
+   485→   485→        </Card>
+   486→   486→      ) : (
+   487→   487→        activeShipments.map((shipment, i) => {
+   488→   488→          const order = orders.find((o) => o.id === shipment.orderId);
+   489→   489→          const currentIdx = getStatusIndex(shipment.status);
+   490→   490→
+   491→   491→          return (
+   492→   492→            <motion.div
+   493→   493→              key={shipment.id}
+   494→   494→              initial={{ opacity: 0, y: 10 }}
+   495→   495→              animate={{ opacity: 1, y: 0 }}
+   496→   496→              transition={{ delay: i * 0.06 }}
+   497→   497→            >
+   498→   498→              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+   499→   499→                <CardHeader className="pb-2">
+   500→   500→                  <div className="flex items-start justify-between">
+   501→   501→                    <div>
+   502→   502→                      <CardTitle className="text-base font-mono text-rose-700">{shipment.orderId}</CardTitle>
+   503→   503→                      <CardDescription>{order?.customerName || 'Customer'}</CardDescription>
+   504→   504→                    </div>
+   505→   505→                    <ShipmentStatusBadge status={shipment.status} />
+   506→   506→                  </div>
+   507→   507→                </CardHeader>
+   508→   508→                <CardContent className="space-y-4">
+   509→   509→                  {/* Customer Address */}
+   510→   510→                  <div className="rounded-xl bg-rose-50/70 p-3 border border-rose-100">
+   511→   511→                    <div className="flex items-start gap-2">
+   512→   512→                      <MapPin className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
+   513→   513→                      <div>
+   514→   514→                        <p className="text-xs font-medium text-rose-700 mb-0.5">Delivery Address</p>
+   515→   515→                        <p className="text-sm">{order?.shippingAddress || 'Address on file'}</p>
+   516→   516→                      </div>
+   517→   517→                    </div>
+   518→   518→                  </div>
+   519→   519→
+   520→   520→                  {/* Map Placeholder */}
+   521→   521→                  <div className="relative rounded-xl bg-gradient-to-br from-slate-100 to-slate-50 border border-slate-200 aspect-[16/9] sm:h-36 flex items-center justify-center overflow-hidden">
+   522→   522→                    <div className="absolute inset-0 opacity-10">
+   523→   523→                      <div className="absolute top-2 left-4 w-20 h-0.5 bg-slate-400 rotate-12" />
+   524→   524→                      <div className="absolute top-8 left-10 w-32 h-0.5 bg-slate-400 -rotate-6" />
+   525→   525→                      <div className="absolute bottom-4 right-6 w-24 h-0.5 bg-slate-400 rotate-3" />
+   526→   526→                      <div className="absolute top-14 right-10 w-16 h-0.5 bg-slate-400 -rotate-12" />
+   527→   527→                      <div className="absolute bottom-10 left-8 w-28 h-0.5 bg-slate-400 rotate-8" />
+   528→   528→                    </div>
+   529→   529→                    <div className="flex flex-col items-center gap-1.5 z-10">
+   530→   530→                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-rose-500 text-white shadow-lg shadow-rose-200">
+   531→   531→                        <Navigation className="h-5 w-5" />
+   532→   532→                      </div>
+   533→   533→                      <p className="text-xs font-semibold text-slate-600">{shipment.currentLocation}</p>
+   534→   534→                      <p className="text-[10px] text-slate-400">Live tracking available</p>
+   535→   535→                    </div>
+   536→   536→                  </div>
+   537→   537→
+   538→   538→                  {/* Status Timeline / Progress */}
+   539→   539→                  <div>
+   540→   540→                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+   541→   541→                      Delivery Progress
+   542→   542→                    </p>
+   543→   543→                    <div className="flex items-center gap-1">
+   544→   544→                      {DELIVERY_STATUS_FLOW.map((step, idx) => {
+   545→   545→                        const isCompleted = idx <= currentIdx;
+   546→   546→                        const isCurrent = idx === currentIdx;
+   547→   547→                        return (
+   548→   548→                          <div key={step.key} className="flex-1 flex flex-col items-center gap-1">
+   549→   549→                            <div
+   550→   550→                              className={`flex h-8 w-8 items-center justify-center rounded-full transition-all ${
+   551→   551→                                isCompleted
+   552→   552→                                  ? isCurrent
+   553→   553→                                    ? 'bg-rose-500 text-white shadow-md shadow-rose-200 ring-4 ring-rose-100'
+   554→   554→                                    : 'bg-emerald-500 text-white'
+   555→   555→                                  : 'bg-slate-100 text-slate-400'
+   556→   556→                              }`}
+   557→   557→                            >
+   558→   558→                              <step.icon className="h-4 w-4" />
+   559→   559→                            </div>
+   560→   560→                            <span
+   561→   561→                              className={`text-[10px] font-medium text-center leading-tight ${
+   562→   562→                                isCompleted ? 'text-foreground' : 'text-muted-foreground'
+   563→   563→                              }`}
+   564→   564→                            >
+   565→   565→                              {step.label}
+   566→   566→                            </span>
+   567→   567→                          </div>
+   568→   568→                        );
+   569→   569→                      })}
+   570→   570→                    </div>
+   571→   571→                  </div>
+   572→   572→
+   573→   573→                  {/* Status Update Buttons */}
+   574→   574→                  <div className="space-y-2">
+   575→   575→                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+   576→   576→                      Update Status
+   577→   577→                    </p>
+   578→   578→                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+   579→   579→                      {DELIVERY_STATUS_FLOW.map((step) => {
+   580→   580→                        const isNextStep = getStatusIndex(step.key) === currentIdx + 1;
+   581→   581→                        const isPast = getStatusIndex(step.key) <= currentIdx;
+   582→   582→                        return (
+   583→   583→                          <Button
+   584→   584→                            key={step.key}
+   585→   585→                            size="sm"
+   586→   586→                            disabled={isPast}
+   587→   587→                            className={`text-xs min-h-[44px] ${
+   588→   588→                              isNextStep
+   589→   589→                                ? `${step.color} text-white shadow-sm`
+   590→   590→                                : isPast
+   591→   591→                                ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
+   592→   592→                                : 'bg-slate-50 text-slate-400 border border-slate-200'
+   593→   593→                            }`}
+   594→   594→                            onClick={() =>
+   595→   595→                              onUpdateStatus(shipment.id, step.key, shipment.currentLocation)
+   596→   596→                            }
+   597→   597→                          >
+   598→   598→                            {isPast && <CheckCircle2 className="h-3 w-3 mr-1" />}
+   599→   599→                            {step.label}
+   600→   600→                          </Button>
+   601→   601→                        );
+   602→   602→                      })}
+   603→   603→                    </div>
+   604→   604→                  </div>
+   605→   605→                </CardContent>
+   606→   606→              </Card>
+   607→   607→            </motion.div>
+   608→   608→          );
+   609→   609→        })
+   610→   610→      )}
+   611→   611→    </div>
+   612→   612→  );
+   613→   613→}
+   614→   614→
+   615→   615→// ─── Delivery History ──────────────────────────────────────────────────────
+   616→   616→function DeliveryHistory({
+   617→   617→  completedShipments,
+   618→   618→  completedOrders,
+   619→   619→  orders,
+   620→   620→}: {
+   621→   621→  completedShipments: Shipment[];
+   622→   622→  completedOrders: Order[];
+   623→   623→  orders: Order[];
+   624→   624→}) {
+   625→   625→  const [filterPeriod, setFilterPeriod] = useState<'all' | 'week' | 'month'>('all');
+   626→   626→
+   627→   627→  // Combine shipments and delivered orders for history
+   628→   628→  const historyItems = useMemo(() => {
+   629→   629→    const deliveredOrders = orders.filter((o) => o.status === 'delivered');
+   630→   630→    return deliveredOrders.map((order) => {
+   631→   631→      const shipment = completedShipments.find((s) => s.orderId === order.id);
+   632→   632→      return {
+   633→   633→        orderId: order.id,
+   634→   634→        customer: order.customerName,
+   635→   635→        date: order.updatedAt,
+   636→   636→        status: shipment?.status || ('delivered' as const),
+   637→   637→        address: order.shippingAddress,
+   638→   638→        total: order.total,
+   639→   639→      };
+   640→   640→    });
+   641→   641→  }, [orders, completedShipments]);
+   642→   642→
+   643→   643→  const filteredHistory = useMemo(() => {
+   644→   644→    if (filterPeriod === 'all') return historyItems;
+   645→   645→    const now = new Date();
+   646→   646→    const cutoff = filterPeriod === 'week'
+   647→   647→      ? new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+   648→   648→      : new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+   649→   649→    return historyItems.filter((item) => new Date(item.date) >= cutoff);
+   650→   650→  }, [historyItems, filterPeriod]);
+   651→   651→
+   652→   652→  return (
+   653→   653→    <div className="space-y-5">
+   654→   654→      <div>
+   655→   655→        <h1 className="text-xl font-bold tracking-tight">Delivery History</h1>
+   656→   656→        <p className="text-muted-foreground text-sm mt-0.5">
+   657→   657→          {historyItems.length} completed deliver{historyItems.length !== 1 ? 'ies' : 'y'}
+   658→   658→        </p>
+   659→   659→      </div>
+   660→   660→
+   661→   661→      {/* Date Filter */}
+   662→   662→      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1">
+   663→   663→        {(['all', 'week', 'month'] as const).map((period) => (
+   664→   664→          <Button
+   665→   665→            key={period}
+   666→   666→            size="sm"
+   667→   667→            variant={filterPeriod === period ? 'default' : 'outline'}
+   668→   668→            className={`text-xs min-h-[44px] whitespace-nowrap ${
+   669→   669→              filterPeriod === period
+   670→   670→                ? 'bg-rose-500 hover:bg-rose-600 text-white'
+   671→   671→                : 'border-rose-200 text-rose-700 hover:bg-rose-50'
+   672→   672→            }`}
+   673→   673→            onClick={() => setFilterPeriod(period)}
+   674→   674→          >
+   675→   675→            <Calendar className="h-3 w-3 mr-1" />
+   676→   676→            {period === 'all' ? 'All Time' : period === 'week' ? 'This Week' : 'This Month'}
+   677→   677→          </Button>
+   678→   678→        ))}
+   679→   679→      </div>
+   680→   680→
+   681→   681→      {/* History List */}
+   682→   682→      {filteredHistory.length === 0 ? (
+   683→   683→        <Card className="border-0 shadow-md">
+   684→   684→          <CardContent className="flex flex-col items-center justify-center py-14">
+   685→   685→            <History className="h-10 w-10 text-slate-300 mb-2" />
+   686→   686→            <p className="text-sm text-muted-foreground">No delivery history found</p>
+   687→   687→          </CardContent>
+   688→   688→        </Card>
+   689→   689→      ) : (
+   690→   690→        <div className="space-y-3">
+   691→   691→          {filteredHistory.map((item, i) => (
+   692→   692→            <motion.div
+   693→   693→              key={item.orderId}
+   694→   694→              initial={{ opacity: 0, x: -8 }}
+   695→   695→              animate={{ opacity: 1, x: 0 }}
+   696→   696→              transition={{ delay: i * 0.04 }}
+   697→   697→            >
+   698→   698→              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+   699→   699→                <CardContent className="p-3 sm:p-4">
+   700→   700→                  <div className="flex items-start justify-between">
+   701→   701→                    <div className="flex items-center gap-2 sm:gap-3">
+   702→   702→                      <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
+   703→   703→                        <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
+   704→   704→                      </div>
+   705→   705→                      <div>
+   706→   706→                        <p className="font-mono text-sm font-bold text-rose-700">{item.orderId}</p>
+   707→   707→                        <p className="text-sm font-medium">{item.customer}</p>
+   708→   708→                      </div>
+   709→   709→                    </div>
+   710→   710→                    <div className="text-right">
+   711→   711→                      <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px]">
+   712→   712→                        Delivered
+   713→   713→                      </Badge>
+   714→   714→                      <p className="text-xs text-muted-foreground mt-1">{formatDate(item.date)}</p>
+   715→   715→                    </div>
+   716→   716→                  </div>
+   717→   717→
+   718→   718→                  <Separator className="my-3 bg-rose-100/50" />
+   719→   719→
+   720→   720→                  <div className="flex items-center justify-between text-sm">
+   721→   721→                    <div className="flex items-center gap-1 text-muted-foreground">
+   722→   722→                      <MapPin className="h-3.5 w-3.5" />
+   723→   723→                      <span className="truncate max-w-[120px] sm:max-w-[180px] text-xs">{item.address}</span>
+   724→   724→                    </div>
+   725→   725→                    <span className="font-semibold text-xs">{formatCurrency(item.total)}</span>
+   726→   726→                  </div>
+   727→   727→                </CardContent>
+   728→   728→              </Card>
+   729→   729→            </motion.div>
+   730→   730→          ))}
+   731→   731→        </div>
+   732→   732→      )}
+   733→   733→    </div>
+   734→   734→  );
+   735→   735→}
+   736→   736→
+   737→   737→// ─── Delivery Profile ──────────────────────────────────────────────────────
+   738→   738→function DeliveryProfile({
+   739→   739→  currentUser,
+   740→   740→  completedShipments,
+   741→   741→}: {
+   742→   742→  currentUser: { id: string; name: string; email: string; phone: string; avatar: string; role: string } | null;
+   743→   743→  completedShipments: Shipment[];
+   744→   744→}) {
+   745→   745→  // Demo stats
+   746→   746→  const profileStats = {
+   747→   747→    totalDeliveries: 247,
+   748→   748→    rating: 4.8,
+   749→   749→    onTimePercent: 96,
+   750→   750→  };
+   751→   751→
+   752→   752→  return (
+   753→   753→    <div className="space-y-5">
+   754→   754→      {/* Profile Header */}
+   755→   755→      <Card className="border-0 shadow-lg overflow-hidden">
+   756→   756→        <div className="h-20 bg-gradient-to-r from-rose-500 to-pink-500" />
+   757→   757→        <CardContent className="p-3 sm:p-4 -mt-8">
+   758→   758→          <div className="flex flex-col items-center text-center sm:flex-row sm:items-end sm:text-left gap-3 sm:gap-4">
+   759→   759→            <Avatar className="h-16 w-16 border-4 border-white shadow-lg">
+   760→   760→              <AvatarFallback className="bg-rose-100 text-rose-700 text-xl font-bold">
+   761→   761→                {currentUser?.avatar || 'AP'}
+   762→   762→              </AvatarFallback>
+   763→   763→            </Avatar>
+   764→   764→            <div className="pb-1">
+   765→   765→              <h2 className="text-lg font-bold">{currentUser?.name || 'Driver'}</h2>
+   766→   766→              <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-200 text-xs">
+   767→   767→                Delivery Partner
+   768→   768→              </Badge>
+   769→   769→            </div>
+   770→   770→          </div>
+   771→   771→        </CardContent>
+   772→   772→      </Card>
+   773→   773→
+   774→   774→      {/* Contact Info */}
+   775→   775→      <Card className="border-0 shadow-md">
+   776→   776→        <CardHeader className="pb-2">
+   777→   777→          <CardTitle className="text-sm">Contact Information</CardTitle>
+   778→   778→        </CardHeader>
+   779→   779→        <CardContent className="space-y-3">
+   780→   780→          <div className="flex items-center gap-3">
+   781→   781→            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+   782→   782→              <Mail className="h-4 w-4" />
+   783→   783→            </div>
+   784→   784→            <div>
+   785→   785→              <p className="text-xs text-muted-foreground">Email</p>
+   786→   786→              <p className="text-sm font-medium">{currentUser?.email || 'driver@glowcart.demo'}</p>
+   787→   787→            </div>
+   788→   788→          </div>
+   789→   789→          <Separator className="bg-rose-100/50" />
+   790→   790→          <div className="flex items-center gap-3">
+   791→   791→            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+   792→   792→              <Phone className="h-4 w-4" />
+   793→   793→            </div>
+   794→   794→            <div>
+   795→   795→              <p className="text-xs text-muted-foreground">Phone</p>
+   796→   796→              <p className="text-sm font-medium">{currentUser?.phone || '+91 98765 43212'}</p>
+   797→   797→            </div>
+   798→   798→          </div>
+   799→   799→        </CardContent>
+   800→   800→      </Card>
+   801→   801→
+   802→   802→      {/* Performance Stats */}
+   803→   803→      <Card className="border-0 shadow-md">
+   804→   804→        <CardHeader className="pb-2">
+   805→   805→          <CardTitle className="text-sm flex items-center gap-2">
+   806→   806→            <TrendingUp className="h-4 w-4 text-rose-500" />
+   807→   807→            Performance Stats
+   808→   808→          </CardTitle>
+   809→   809→        </CardHeader>
+   810→   810→        <CardContent>
+   811→   811→          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+   812→   812→            <div className="text-center rounded-xl bg-rose-50/70 p-2 sm:p-3 border border-rose-100">
+   813→   813→              <p className="text-lg sm:text-2xl font-bold text-rose-700">{profileStats.totalDeliveries}</p>
+   814→   814→              <p className="text-[9px] sm:text-[10px] font-medium text-muted-foreground">Total Deliveries</p>
+   815→   815→            </div>
+   816→   816→            <div className="text-center rounded-xl bg-amber-50/70 p-2 sm:p-3 border border-amber-100">
+   817→   817→              <div className="flex items-center justify-center gap-1">
+   818→   818→                <Star className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-amber-500 fill-amber-500" />
+   819→   819→                <p className="text-lg sm:text-2xl font-bold text-amber-700">{profileStats.rating}</p>
+   820→   820→              </div>
+   821→   821→              <p className="text-[9px] sm:text-[10px] font-medium text-muted-foreground">Rating</p>
+   822→   822→            </div>
+   823→   823→            <div className="text-center rounded-xl bg-emerald-50/70 p-2 sm:p-3 border border-emerald-100 col-span-2 sm:col-span-1">
+   824→   824→              <p className="text-lg sm:text-2xl font-bold text-emerald-700">{profileStats.onTimePercent}%</p>
+   825→   825→              <p className="text-[9px] sm:text-[10px] font-medium text-muted-foreground">On-Time</p>
+   826→   826→            </div>
+   827→   827→          </div>
+   828→   828→
+   829→   829→          {/* Rating Progress */}
+   830→   830→          <div className="mt-4">
+   831→   831→            <div className="flex items-center justify-between mb-1">
+   832→   832→              <span className="text-xs text-muted-foreground">On-time delivery rate</span>
+   833→   833→              <span className="text-xs font-bold text-emerald-600">{profileStats.onTimePercent}%</span>
+   834→   834→            </div>
+   835→   835→            <Progress value={profileStats.onTimePercent} className="h-2 [&>div]:bg-emerald-500" />
+   836→   836→          </div>
+   837→   837→
+   838→   838→          <div className="mt-3">
+   839→   839→            <div className="flex items-center justify-between mb-1">
+   840→   840→              <span className="text-xs text-muted-foreground">Customer satisfaction</span>
+   841→   841→              <span className="text-xs font-bold text-amber-600">{(profileStats.rating / 5 * 100).toFixed(0)}%</span>
+   842→   842→            </div>
+   843→   843→            <Progress value={(profileStats.rating / 5) * 100} className="h-2 [&>div]:bg-amber-500" />
+   844→   844→          </div>
+   845→   845→        </CardContent>
+   846→   846→      </Card>
+   847→   847→
+   848→   848→      {/* Vehicle Info */}
+   849→   849→      <Card className="border-0 shadow-md">
+   850→   850→        <CardHeader className="pb-2">
+   851→   851→          <CardTitle className="text-sm flex items-center gap-2">
+   852→   852→            <Bike className="h-4 w-4 text-rose-500" />
+   853→   853→            Vehicle Information
+   854→   854→          </CardTitle>
+   855→   855→        </CardHeader>
+   856→   856→        <CardContent>
+   857→   857→          <div className="rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-100 p-3 sm:p-4">
+   858→   858→            <div className="flex items-center gap-3 mb-3">
+   859→   859→              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 text-white shadow-md shadow-rose-200">
+   860→   860→                <Bike className="h-6 w-6" />
+   861→   861→              </div>
+   862→   862→              <div>
+   863→   863→                <p className="font-semibold text-sm">Honda Activa 6G</p>
+   864→   864→                <p className="text-xs text-muted-foreground">MH-01-AB-1234</p>
+   865→   865→              </div>
+   866→   866→            </div>
+   867→   867→            <div className="grid grid-cols-2 gap-2 text-xs">
+   868→   868→              <div className="rounded-lg bg-white/70 p-2 border border-rose-100">
+   869→   869→                <p className="text-muted-foreground">Type</p>
+   870→   870→                <p className="font-medium">Two Wheeler</p>
+   871→   871→              </div>
+   872→   872→              <div className="rounded-lg bg-white/70 p-2 border border-rose-100">
+   873→   873→                <p className="text-muted-foreground">Fuel</p>
+   874→   874→                <p className="font-medium">Petrol</p>
+   875→   875→              </div>
+   876→   876→              <div className="rounded-lg bg-white/70 p-2 border border-rose-100">
+   877→   877→                <p className="text-muted-foreground">Year</p>
+   878→   878→                <p className="font-medium">2023</p>
+   879→   879→              </div>
+   880→   880→              <div className="rounded-lg bg-white/70 p-2 border border-rose-100">
+   881→   881→                <p className="text-muted-foreground">Status</p>
+   882→   882→                <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] px-1.5">
+   883→   883→                  Active
+   884→   884→                </Badge>
+   885→   885→              </div>
+   886→   886→            </div>
+   887→   887→          </div>
+   888→   888→        </CardContent>
+   889→   889→      </Card>
+   890→   890→    </div>
+   891→   891→  );
+   892→   892→}
+   893→   893→

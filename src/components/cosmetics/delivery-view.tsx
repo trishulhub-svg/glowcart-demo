@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Home,
   Truck,
@@ -76,11 +76,11 @@ function formatCurrency(amount: number) {
 // ─── Animation Variants ────────────────────────────────────────────────────
 const containerVariants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.07 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
 } as const;
 const itemVariants = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 24 } },
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
 };
 
 // ─── Status Flow for delivery ──────────────────────────────────────────────
@@ -183,6 +183,13 @@ export default function DeliveryView() {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={logout}
+              className="text-[10px] sm:text-xs text-gray-400 hover:text-rose-500 transition-colors font-medium px-1.5 py-1 rounded-md hover:bg-rose-50"
+              title="Logout"
+            >
+              Logout
+            </button>
             <div className="text-right leading-tight">
               <p className="text-sm font-medium">{currentUser?.name || 'Driver'}</p>
               <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-rose-50 text-rose-700 border-rose-200">
@@ -200,72 +207,66 @@ export default function DeliveryView() {
 
       {/* ─── Main Content ─────────────────────────────────────────────────── */}
       <main className="flex-1 mx-auto w-full max-w-lg px-4 py-5 pb-20">
-        <AnimatePresence mode="wait">
-          {currentView === 'delivery_dashboard' && (
-            <motion.div
-              key="del-dashboard"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3 }}
-            >
-              <DeliveryDashboard
-                activeShipments={activeShipments}
-                completedShipments={completedShipments}
-                orders={orders}
-                onStartDelivery={handleStartDelivery}
-                onUpdateStatus={handleUpdateStatus}
-              />
-            </motion.div>
-          )}
+        {currentView === 'delivery_dashboard' && (
+          <motion.div
+            key="del-dashboard"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <DeliveryDashboard
+              activeShipments={activeShipments}
+              completedShipments={completedShipments}
+              orders={orders}
+              onStartDelivery={handleStartDelivery}
+              onUpdateStatus={handleUpdateStatus}
+            />
+          </motion.div>
+        )}
 
-          {currentView === 'delivery_active' && (
-            <motion.div
-              key="del-active"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3 }}
-            >
-              <DeliveryActive
-                activeShipments={activeShipments}
-                orders={orders}
-                onUpdateStatus={handleUpdateStatus}
-              />
-            </motion.div>
-          )}
+        {currentView === 'delivery_active' && (
+          <motion.div
+            key="del-active"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <DeliveryActive
+              activeShipments={activeShipments}
+              orders={orders}
+              onUpdateStatus={handleUpdateStatus}
+            />
+          </motion.div>
+        )}
 
-          {currentView === 'delivery_history' && (
-            <motion.div
-              key="del-history"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3 }}
-            >
-              <DeliveryHistory
-                completedShipments={completedShipments}
-                completedOrders={completedOrders}
-                orders={orders}
-              />
-            </motion.div>
-          )}
+        {currentView === 'delivery_history' && (
+          <motion.div
+            key="del-history"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <DeliveryHistory
+              completedShipments={completedShipments}
+              completedOrders={completedOrders}
+              orders={orders}
+            />
+          </motion.div>
+        )}
 
-          {currentView === 'delivery_profile' && (
-            <motion.div
-              key="del-profile"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3 }}
-            >
-              <DeliveryProfile
-                currentUser={currentUser}
-                completedShipments={completedShipments}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {currentView === 'delivery_profile' && (
+          <motion.div
+            key="del-profile"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <DeliveryProfile
+              currentUser={currentUser}
+              completedShipments={completedShipments}
+            />
+          </motion.div>
+        )}
       </main>
 
       <TrishulHubFooter variant="light" />
@@ -356,9 +357,9 @@ function DeliveryDashboard({
       >
         {stats.map((stat) => (
           <motion.div key={stat.label} variants={itemVariants}>
-            <Card className="border-0 shadow-md text-center overflow-hidden">
+            <Card className="border border-gray-100 shadow-sm text-center overflow-hidden bg-white">
               <CardContent className="p-3">
-                <div className={`mx-auto mb-1.5 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-gradient-to-br ${stat.color} shadow-md ${stat.shadow}`}>
+                <div className={`mx-auto mb-1.5 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-gradient-to-br ${stat.color} shadow-sm ${stat.shadow}`}>
                   <stat.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
                 </div>
                 <p className="text-lg sm:text-xl font-bold">{stat.value}</p>
@@ -389,7 +390,7 @@ function DeliveryDashboard({
         </h2>
         <div className="space-y-3">
           {activeShipments.length === 0 ? (
-            <Card className="border-0 shadow-md">
+            <Card className="border border-gray-100 shadow-sm">
               <CardContent className="flex flex-col items-center justify-center py-10">
                 <CheckCircle2 className="h-10 w-10 text-emerald-400 mb-2" />
                 <p className="text-sm text-muted-foreground">No active deliveries</p>
@@ -405,7 +406,7 @@ function DeliveryDashboard({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
                 >
-                  <Card className="border-0 shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+                  <Card className="border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                     <CardContent className="p-3 sm:p-4">
                       <div className="flex items-start justify-between mb-2">
                         <div>
@@ -476,7 +477,7 @@ function DeliveryActive({
       </div>
 
       {activeShipments.length === 0 ? (
-        <Card className="border-0 shadow-md">
+        <Card className="border border-gray-100 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-16">
             <CheckCircle2 className="h-12 w-12 text-emerald-400 mb-3" />
             <p className="text-lg font-medium text-muted-foreground">All deliveries complete!</p>
@@ -495,7 +496,7 @@ function DeliveryActive({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06 }}
             >
-              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+              <Card className="border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between">
                     <div>
@@ -680,7 +681,7 @@ function DeliveryHistory({
 
       {/* History List */}
       {filteredHistory.length === 0 ? (
-        <Card className="border-0 shadow-md">
+        <Card className="border border-gray-100 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-14">
             <History className="h-10 w-10 text-slate-300 mb-2" />
             <p className="text-sm text-muted-foreground">No delivery history found</p>
@@ -695,7 +696,7 @@ function DeliveryHistory({
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.04 }}
             >
-              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+              <Card className="border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                 <CardContent className="p-3 sm:p-4">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2 sm:gap-3">
@@ -752,7 +753,7 @@ function DeliveryProfile({
   return (
     <div className="space-y-5">
       {/* Profile Header */}
-      <Card className="border-0 shadow-lg overflow-hidden">
+      <Card className="border border-gray-100 shadow-md overflow-hidden">
         <div className="h-20 bg-gradient-to-r from-rose-500 to-pink-500" />
         <CardContent className="p-3 sm:p-4 -mt-8">
           <div className="flex flex-col items-center text-center sm:flex-row sm:items-end sm:text-left gap-3 sm:gap-4">
@@ -772,7 +773,7 @@ function DeliveryProfile({
       </Card>
 
       {/* Contact Info */}
-      <Card className="border-0 shadow-md">
+      <Card className="border border-gray-100 shadow-sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm">Contact Information</CardTitle>
         </CardHeader>
@@ -800,7 +801,7 @@ function DeliveryProfile({
       </Card>
 
       {/* Performance Stats */}
-      <Card className="border-0 shadow-md">
+      <Card className="border border-gray-100 shadow-sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-rose-500" />
@@ -846,7 +847,7 @@ function DeliveryProfile({
       </Card>
 
       {/* Vehicle Info */}
-      <Card className="border-0 shadow-md">
+      <Card className="border border-gray-100 shadow-sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm flex items-center gap-2">
             <Bike className="h-4 w-4 text-rose-500" />

@@ -309,8 +309,8 @@ export default function LoginPage() {
                         <CardContent className="p-3 sm:p-5">
                           <div className="flex items-start gap-3">
                             {/* Icon */}
-                            <div className={`flex-shrink-0 flex items-center justify-center w-8 h-8 sm:w-10 h-10 rounded-lg ${roleConfig.iconBg} ${roleConfig.iconColor} transition-transform duration-300 group-hover:scale-110`}>
-                              <IconComp className="w-4 h-4 sm:w-5 h-5" strokeWidth={1.8} />
+                            <div className={`flex-shrink-0 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg ${roleConfig.iconBg} ${roleConfig.iconColor} transition-transform duration-300 group-hover:scale-110`}>
+                              <IconComp className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.8} />
                             </div>
                             {/* Text */}
                             <div className="flex-1 min-w-0">
