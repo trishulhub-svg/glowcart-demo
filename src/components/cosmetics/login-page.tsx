@@ -187,10 +187,10 @@ export default function LoginPage() {
             initial={{ opacity: 0, y: -30, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.3, type: 'spring', stiffness: 200 }}
-            className="mb-8"
+            className="mb-6"
           >
-            <div className="relative w-24 h-24 flex-shrink-0 mb-2">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={96} height={96} className="object-contain drop-shadow-lg" />
+            <div className="relative w-44 h-44 xl:w-52 xl:h-52 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={208} height={208} className="object-contain drop-shadow-2xl" />
             </div>
           </motion.div>
 
@@ -235,25 +235,25 @@ export default function LoginPage() {
 
           {/* TrishulHub Badge */}
           <motion.div
-            className="mt-12 flex items-center gap-3"
+            className="mt-10 flex items-center gap-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
           >
-            <div className="relative w-10 h-10 flex-shrink-0">
+            <div className="relative w-14 h-14 flex-shrink-0">
               <Image
                 src="/trishulhub-logo.png"
                 alt="TrishulHub"
-                width={40}
-                height={40}
-                className="object-contain"
+                width={56}
+                height={56}
+                className="object-contain drop-shadow-md"
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-semibold text-white/90">
+              <span className="text-base font-semibold text-white/90">
                 A Trishul<span className="text-sky-300">Hub</span> Product
               </span>
-              <span className="text-[10px] text-white/50">Technology & Innovation</span>
+              <span className="text-xs text-white/60">Technology & Innovation</span>
             </div>
           </motion.div>
         </div>
@@ -271,15 +271,15 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="relative w-12 h-12 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={48} height={48} className="object-contain" />
+          <div className="flex items-center gap-3.5 mb-4">
+            <div className="relative w-14 h-14 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={56} height={56} className="object-contain" />
             </div>
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-gray-900">
                 Glow<span className="text-rose-500">Cart</span>
               </h1>
-              <p className="text-[11px] text-gray-500 -mt-0.5">Premium Beauty, Delivered</p>
+              <p className="text-xs text-gray-500 -mt-0.5">Premium Beauty, Delivered</p>
             </div>
           </div>
         </motion.div>

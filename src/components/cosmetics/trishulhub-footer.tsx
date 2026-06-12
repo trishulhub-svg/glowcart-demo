@@ -27,22 +27,22 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
         {/* Main Footer Row */}
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           {/* Left: TrishulHub Branding */}
-          <div className="flex items-center gap-3">
-            <div className="relative w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
+          <div className="flex items-center gap-4">
+            <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
               <Image
                 src="/trishulhub-logo.png"
                 alt="TrishulHub"
-                width={40}
-                height={40}
+                width={56}
+                height={56}
                 className="object-contain"
                 priority
               />
             </div>
             <div className="flex flex-col">
-              <span className={`text-sm sm:text-base font-semibold tracking-tight ${isDark ? 'text-white' : 'text-gray-800'}`}>
+              <span className={`text-base sm:text-lg font-semibold tracking-tight ${isDark ? 'text-white' : 'text-gray-800'}`}>
                 Trishul<span className={isDark ? 'text-sky-400' : 'text-sky-600'}>Hub</span>
               </span>
-              <span className={`text-[10px] sm:text-[11px] ${isDark ? 'text-white/50' : 'text-gray-500'} -mt-0.5`}>Technology & Innovation</span>
+              <span className={`text-xs sm:text-sm ${isDark ? 'text-white/50' : 'text-gray-500'} -mt-0.5`}>Technology & Innovation</span>
             </div>
           </div>
 
@@ -84,21 +84,21 @@ export function TrishulHubFooter({ variant = 'light', className = '' }: TrishulH
 export function TrishulHubBadge({ variant = 'light' }: { variant?: 'light' | 'dark' }) {
   const isDark = variant === 'dark';
   return (
-    <div className="flex items-center gap-2.5">
-      <div className="relative w-7 h-7 flex-shrink-0">
+    <div className="flex items-center gap-3">
+      <div className="relative w-9 h-9 flex-shrink-0">
         <Image
           src="/trishulhub-logo.png"
           alt="TrishulHub"
-          width={28}
-          height={28}
+          width={36}
+          height={36}
           className="object-contain"
         />
       </div>
       <div className="flex flex-col">
-        <span className={`text-xs font-semibold tracking-tight ${isDark ? 'text-white/70' : 'text-gray-600'}`}>
+        <span className={`text-sm font-semibold tracking-tight ${isDark ? 'text-white/70' : 'text-gray-600'}`}>
           Trishul<span className={isDark ? 'text-sky-400' : 'text-sky-600'}>Hub</span>
         </span>
-        <span className={`text-[9px] ${isDark ? 'text-white/40' : 'text-gray-400'} -mt-0.5`}>Technology & Innovation</span>
+        <span className={`text-[10px] ${isDark ? 'text-white/40' : 'text-gray-400'} -mt-0.5`}>Technology & Innovation</span>
       </div>
     </div>
   );

@@ -282,16 +282,16 @@ export default function AdminView() {
           }`}
         >
           {/* Logo */}
-          <div className="flex h-16 items-center gap-3 border-b border-rose-100 px-5">
-            <div className="relative h-9 w-9 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={36} height={36} className="object-contain" />
+          <div className="flex h-18 items-center gap-3.5 border-b border-rose-100 px-5 py-3">
+            <div className="relative h-11 w-11 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={44} height={44} className="object-contain" />
             </div>
             <div>
               <h1 className="text-lg font-bold tracking-tight text-gray-900">
                 Glow<span className="text-rose-500">Cart</span>
               </h1>
               <div className="mt-0.5">
-                <span className="text-[10px] text-gray-500 font-medium">by Trishul<span className="text-sky-600">Hub</span></span>
+                <span className="text-[11px] text-gray-500 font-medium">by Trishul<span className="text-sky-600">Hub</span></span>
               </div>
               <p className="text-[10px] font-medium uppercase tracking-widest text-gray-400">
                 Admin Panel
@@ -1575,14 +1575,14 @@ export default function AdminView() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="flex items-center gap-2.5">
-            <div className="relative h-7 w-7 flex-shrink-0">
-              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={28} height={28} className="object-contain" />
+          <div className="flex items-center gap-3">
+            <div className="relative h-9 w-9 flex-shrink-0">
+              <Image src="/trishulhub-logo.png" alt="TrishulHub" width={36} height={36} className="object-contain" />
             </div>
             <span className="text-sm font-bold text-gray-900">
               Glow<span className="text-rose-500">Cart</span>
             </span>
-            <span className="text-[9px] text-gray-400 font-medium ml-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
+            <span className="text-[10px] text-gray-500 font-medium ml-0.5">by Trishul<span className="text-sky-600">Hub</span></span>
           </div>
           <div className="ml-auto">
             <Avatar className="h-8 w-8 border border-rose-200">
